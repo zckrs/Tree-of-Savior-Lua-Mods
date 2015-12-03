@@ -38,8 +38,21 @@ local classExperienceData = ExperienceData();
 startTime = os.clock();
 SECONDS_IN_HOUR = 3600;
 
+local labels = {
+  "Current Xp",
+  "Required Xp",
+  "TNL",
+  "%",
+  "Xp/Hr",
+  "Last",
+  "Gained"
+}
+
 function ON_JOB_EXP_UPDATE_HOOKED(frame, msg, str, exp, tableinfo)
-  ui.SysMsg("job updateasdewqrweq1f");
+  local frame = ui.GetFrame("expviewer");
+  frame:ShowWindow(1);
+  frame:ShowTitleBar(1);
+
   local elapsedTime = os.difftime(os.clock(), startTime);
   local currentTotalClassExperience = exp;
   local currentClassLevel = tableinfo.level;
@@ -52,8 +65,29 @@ function ON_JOB_EXP_UPDATE_HOOKED(frame, msg, str, exp, tableinfo)
   classExperienceData.currentExperience = exp - tableinfo.startExp;
   classExperienceData.requiredExperience = tableinfo.endExp - tableinfo.startExp;
 
+  --[[CALCULATE EXPERIENCE]]
   CALCULATE_EXPERIENCE_DATA(baseExperienceData, elapsedTime);
   CALCULATE_EXPERIENCE_DATA(classExperienceData, elapsedTime);
+
+  local baseExperienceRichText = GET_CHILD(frame, 'baseExperience', "ui::CRichText");
+
+  baseExperienceRichText:SetText(
+    '{@sti7}{s16}' ..
+    baseExperienceData.currentExperience .." / " .. baseExperienceData.requiredExperience .. "   " .. 
+    baseExperienceData.currentPercent .. "    " ..
+    baseExperienceData.experienceGained .. "    " ..
+    baseExperienceData.killsTilNextLevel .. "    " ..
+    baseExperienceData.experiencePerHour .. "    ");
+
+  local classExperienceRichText = GET_CHILD(frame, 'classExperience', "ui::CRichText");
+  
+  classExperienceRichText:SetText(
+    '{@sti7}{s16}' ..
+    classExperienceData.currentExperience .." / " .. classExperienceData.requiredExperience .. "   " .. 
+    classExperienceData.currentPercent .. "    " ..
+    classExperienceData.experienceGained .. "    " ..
+    classExperienceData.killsTilNextLevel .. "    " ..
+    classExperienceData.experiencePerHour .. "    ");
 
   PRINT_EXPERIENCE_DATA(baseExperienceData);
   PRINT_EXPERIENCE_DATA(classExperienceData);
@@ -69,51 +103,40 @@ function CALCULATE_EXPERIENCE_DATA(experienceData, elapsedTime)
     return;
   end
 
-  --perform calculations here
+  --[[PERFORM CALCULATIONS]]
   experienceData.lastExperienceGain = experienceData.currentExperience - experienceData.previousCurrentExperience;
   experienceData.experienceGained = experienceData.experienceGained + experienceData.lastExperienceGain;
   experienceData.currentPercent = experienceData.currentExperience / experienceData.requiredExperience * 100;
   experienceData.killsTilNextLevel = math.ceil((experienceData.requiredExperience - experienceData.currentExperience) / experienceData.lastExperienceGain);
   experienceData.experiencePerHour = (experienceData.experienceGained * (SECONDS_IN_HOUR / elapsedTime));
 
-  --end of updates, set previous
+  --[[END OF UPDATES, SET PREVIOUS]]
   experienceData.previousCurrentExperience = experienceData.currentExperience;
 end
 
 function PRINT_EXPERIENCE_DATA(experienceData)
-  ui.SysMsg("CURRENT: " .. experienceData.currentExperience .. " / " .. experienceData.requiredExperience .. "   GAINED: " .. experienceData.lastExperienceGain .. "    percent: " .. experienceData.currentPercent .. "%" .. "   tnl: " .. experienceData.killsTilNextLevel .. "   hour: " .. experienceData.experiencePerHour);
+  ui.SysMsg(experienceData.currentExperience .. " / " .. experienceData.requiredExperience .. "   " .. experienceData.lastExperienceGain .. " gained   " .. experienceData.currentPercent .. "%" .. "   " .. experienceData.killsTilNextLevel .. " tnl   " .. experienceData.experiencePerHour .. " exp/hr");
 end
 
---[[
-local currentMaxExp = session.GetEXP() .. " / " .. session.GetMaxEXP();
+function OPEN_EXP_VIEWER()
+  ui.SysMsg("Opened exp viewer!");
+end
 
-ui.SysMsg("current / required exp: " .. currentMaxExp);
-ui.SysMsg("silver: " .. GET_TOTAL_MONEY());
-ui.SysMsg("job: " .. session.GetMainSession():GetPCApc():GetJob());
+function CLOSE_EXP_VIEWER()
+  ui.SysMsg("Closed exp viewer!");
+end
 
-local stats = info.GetStat(session.GetMyHandle());
+function dumpTable(table, filename)
+    file = io.open("C:/" .. filename .. ".txt", "w")
+    local status, err = pcall(function () file:write(DataDumper(getmetatable(table))); end);
+    
 
-file = io.open("C:/stats.txt", "w")
-local status, err = pcall(function () file:write(DataDumper(getmetatable(stats))); end);
--- local status, err = pcall(function () file:write(DataDumper(frame)); end);
-
-if err ~= nil then
-    ui.SysMsg(err);
-     file:write(err);
- end
- file:close()
-
-ui.SysMsg("HP: " .. stats.HP);
-ui.SysMsg("SP: " .. stats.SP);
-
-local job = GETMYPCJOB();
-local jobCls = GetClassByType("Job", job);
-local func = "JOBCOMMAND_" .. jobCls.EngName;
-ui.SysMsg(func);
---]]
-
---local frame = ui.GetFrame("expviewer");
---frame:ShowWindow(1);
+    if err ~= nil then
+        ui.SysMsg(err);
+         file:write(err);
+     end
+     file:close()
+end
 
 --DATA DUMP
 function getArgs(fun, file)
