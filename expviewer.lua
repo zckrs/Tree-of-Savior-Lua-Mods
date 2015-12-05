@@ -5,6 +5,13 @@ else
 	_G["ON_JOB_EXP_UPDATE"] = ON_JOB_EXP_UPDATE_HOOKED;
 end
 
+--[[
+UPDATE_EXPCARD_USE_TUTORIAL
+GET_ITEM_LEVEL_EXP
+XAC_EVENTEXPUP
+SCR_EVENTEXPUP
+--]]
+
 --_G["EXPERIENCE_VIEWER"] = { asdf, asdf2, asdf3 = function() end, asdf4}
 
 --[[START EXPERIENCE DATA]]
@@ -30,6 +37,7 @@ function ExperienceData.new()
 	self.killsTilNextLevel = 0;
 	self.experiencePerHour = 0;
 	self.experienceGained = 0;
+	self.timeTilLevel = 0;
 
 	return self
 end
@@ -52,6 +60,9 @@ local labels = {
 }
 
 function ON_JOB_EXP_UPDATE_HOOKED(frame, msg, str, exp, tableinfo)
+
+	ui.SysMsg("card used?");
+
 	local frame = ui.GetFrame("expviewer");
 
 	frame:ShowWindow(1);
@@ -145,6 +156,11 @@ function CALCULATE_EXPERIENCE_DATA(experienceData, elapsedTime)
 
 	experienceData.experiencePerHour = (experienceData.experienceGained * (SECONDS_IN_HOUR / elapsedTime));
 
+	local experienceRemaining = experienceData.requiredExperience - experienceData.currentExperience;
+	local experiencePerSecond = experienceData.experienceGained / elapsedTime;
+
+	experienceData.timeTilLevel = os.date("!%X", experienceRemaining / experiencePerSecond);
+
 	--[[END OF UPDATES, SET PREVIOUS]]
 	experienceData.previousCurrentExperience = experienceData.currentExperience;
 end
@@ -156,7 +172,8 @@ function SET_EXPERIENCE_TEXT(experienceText, experienceData)
 		string.format("%.2f", experienceData.currentPercent) .. "%    " ..
 		ADD_THOUSANDS_SEPARATOR(experienceData.lastExperienceGain) .. "    " ..
 		ADD_THOUSANDS_SEPARATOR(experienceData.killsTilNextLevel) .. "    " ..
-		ADD_THOUSANDS_SEPARATOR(string.format("%i", experienceData.experiencePerHour)) .. "    "
+		ADD_THOUSANDS_SEPARATOR(string.format("%i", experienceData.experiencePerHour)) .. "    " ..
+		experienceData.timeTilLevel
 	);
 end
 
