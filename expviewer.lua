@@ -7,7 +7,7 @@ end
 
 --_G["EXPERIENCE_VIEWER"] = { asdf, asdf2, asdf3 = function() end, asdf4}
 
---[[EXPERIENCE DATA]]
+--[[START EXPERIENCE DATA]]
 local ExperienceData = {}
 ExperienceData.__index = ExperienceData
 
@@ -32,7 +32,7 @@ function ExperienceData.new()
 
 	return self
 end
---[[EXPERIENCE DATA]]
+--[[END EXPERIENCE DATA]]
 
 local baseExperienceData = ExperienceData();
 local classExperienceData = ExperienceData();
@@ -51,43 +51,10 @@ local labels = {
 }
 
 function ON_JOB_EXP_UPDATE_HOOKED(frame, msg, str, exp, tableinfo)
-
-	--[[
-
-	local tframe = ui.GetNewToolTip("item", "item_test");
-    tframe:SetTooltipType('wholeitem');
-    tframe:SetTooltipArg('inven', 0, toitem:GetIESID());
-    tframe:RefreshTooltip();
-
-    local yPos = tframe:GetHeight() + 10;
-    local clickLumin = tframe:CreateOrGetControl('richtext', "DESC", 20, yPos, tframe:GetWidth(), 25);
-    clickLumin:ShowWindow(1);
-    local newtxt = string.format("{@st41}%s{/}", ClMsg("DropCartToSlot"));
-    clickLumin:SetText(newtxt);
-    yPos = yPos + clickLumin:GetHeight();
-
-    tframe:Resize(tframe:GetWidth(), yPos + 20);
-
-    ui.ToCenter(tframe);
-    tframe:ShowWindow(1);
-
-	local tframe = ui.GetNewToolTip("item", "wholeitem");
-	tolua.cast(tframe, 'ui::CTooltipFrame');
-	tframe:RefreshTooltip();
-    ui.ToCenter(tframe);
-    tframe:ShowWindow(1);
-	--]]
-
-	--local ctrl = item:CreateOrGetControlSet('statistics_monster_drop_item', 'item'..offset, xpos, ypos)
-
-	ui.SysMsg("00");
-
 	local frame = ui.GetFrame("expviewer");
-	frame:ShowWindow(1);
-	--frame:ShowFrame(true);
-	frame:ShowTitleBar(0);
 
-	ui.SysMsg("11");
+	frame:ShowWindow(1);
+	frame:ShowTitleBar(0);
 
 	local elapsedTime = os.difftime(os.clock(), startTime);
 	local currentTotalClassExperience = exp;
@@ -105,51 +72,26 @@ function ON_JOB_EXP_UPDATE_HOOKED(frame, msg, str, exp, tableinfo)
 	CALCULATE_EXPERIENCE_DATA(baseExperienceData, elapsedTime);
 	CALCULATE_EXPERIENCE_DATA(classExperienceData, elapsedTime);
 
-	--local f = ui.CreateToolTip('wholeitem_link', "item_link");
-	--f:ShowWindow(1);
+	--frame:Resize(600, 100);
 
-	ui.SysMsg("0");
+	--[[SET TITLE TEXT]]
+	--[[
+	local titleRichTextObject = frame:GetChild("title");
+	local titleRichText = tolua.cast(titleRichTextObject, "ui::CRichText");
+	titleRichText:SetText("{@sti7}{s16}Experience Viewer");
+	--titleRichText:SetOffset(230, 15);
+	--titleRichText:Move(50, 50);
+	--]]
 
-	--local baseExperienceRichText = frame:CreateOrGetControl('richtext', "baseExperience", 500, 500, 200, 20);
+	--[[SET EXPERIENCE TEXT]]
+	local baseExperienceRichText = frame:GetChild("baseExperience");
+	SET_EXPERIENCE_TEXT(baseExperienceRichText, baseExperienceData);
 
-	local baseExperienceRichTextObject = frame:GetChild("baseExperience");
-	local baseExperienceRichText = tolua.cast(baseExperienceRichTextObject, "ui::CRichText");
-
-	--baseExperienceRichText:SetEnable(true);
-
-	--ui.SysMsg("txt: " .. baseExperienceRichText:GetText());
-
-	ui.SysMsg("1");
-
-	isNil(baseExperienceRichText, "text");
-
-	ui.SysMsg("2");
-
-	baseExperienceRichText:SetText(
-	'{@sti7}{s16}' ..
-	baseExperienceData.currentExperience .." / " .. baseExperienceData.requiredExperience .. "   " ..
-	baseExperienceData.currentPercent .. "    " ..
-	baseExperienceData.experienceGained .. "    " ..
-	baseExperienceData.killsTilNextLevel .. "    " ..
-	baseExperienceData.experiencePerHour .. "    ");
-
-	baseExperienceRichText:Move(200, 200);
-
-	baseExperienceRichText:ShowWindow(1);
-
-	ui.SysMsg("3 show window done");
-
-	local asdf = frame:GetChild("classExperience");
-	local asdffdsa = tolua.cast(asdf, "ui::CRichText");
-
-	asdffdsa:SetText("{@sti7}{s16}adekrjgnsdakjnkj asdkfjnasdfjknasdkjnwqeif iwe");
-
-	--local experienceMainGroupBox = frame:GetChild("experience_main");--GET_CHILD(frame, 'experience_main', 'ui::CGroupBox');
-	--tolua.cast(experienceMainGroupBox, "ui::CGroupBox");
-
-	--dumpTable(experienceMainGroupBox, "groupbox");
-	--local cnt = experienceMainGroupBox:GetChildCount();
-	--ui.SysMsg("123123123 count: " .. cnt);
+	local classExperienceRichText = frame:GetChild("classExperience");
+	SET_EXPERIENCE_TEXT(classExperienceRichText, classExperienceData);
+	--local classExperienceRichText = tolua.cast(classExperienceRichObject, "ui::CRichText");
+	--classExperienceRichText:SetOffset(10, 50);
+	--classExperienceRichText:Move(0, 0);
 
 	--[[
 	--file = io.open("C:/pcall-error.txt", "w");
@@ -159,79 +101,29 @@ function ON_JOB_EXP_UPDATE_HOOKED(frame, msg, str, exp, tableinfo)
     	--file:write(err);
     end
 
-	ui.SysMsg("after error");
-
-	local asdf = experienceMainGroupBox:GetChild("currentRequiredBaseExperience");
-
-	if asdf == nil then
-		ui.SysMsg("asdf nil!");
-	end
-
 	local status, err = pcall(function () experienceMainGroupBox:CreateOrGetControl("richtext", "currentRequiredBaseExperience", 15, 15, 0, 24); end);
 	if err ~= nil then
 		ui.SysMsg(err);
 		--file:write(err);
 	end
-
-	local expControl = experienceMainGroupBox:CreateOrGetControl("richtext", "baseExperience", 400, 400, 3000, 20);
-	tolua.cast(expControl, "ui::CRichText");
-	expControl:EnableResizeByText(1);
-	expControl:SetTextFixWidth(1);
-	expControl:SetText("{@sti7}{s48}WORK! WORK! WORK! WORK! WORK! WORK! WORK! WORK! WORK! WORK! WORK! WORK! WORK! WORK! WORK! WORK! WORK! WORK! WORK! WORK! WORK! WORK!");
-
-	ui.SysMsg("create or get control");
-
-	if expControl == nil then
-		ui.SysMsg('expControl text is nil');
-	else
-		ui.SysMsg('expControl text is not nil');
-	end
-
-	if expMain:GetChild("simple_explain") ~= nil then
-		return;
-	end
-	local helpSimpleExplainCtrl = detailGroupBox:CreateOrGetControl("richtext", "simple_explain", 15, 15, groupBoxWidth, 24);
-	tolua.cast(helpSimpleExplainCtrl, "ui::CRichText");
-	helpSimpleExplainCtrl:Resize(groupBoxWidth -35, 40);
-	helpSimpleExplainCtrl:EnableResizeByText(0);
-	helpSimpleExplainCtrl:SetTextFixWidth(1);
-	helpSimpleExplainCtrl:EnableSplitBySpace(0);
-	helpSimpleExplainCtrl:SetText("{@st45tw5}"..helpCls.SimpleExplain.."{/}");
-
-	if detailGroupBox:GetChild("simple_explain") ~= nil then
-        return;
-    end
-    local helpSimpleExplainCtrl = detailGroupBox:CreateOrGetControl("richtext", "simple_explain", 15, 15, groupBoxWidth, 24);
-    tolua.cast(helpSimpleExplainCtrl, "ui::CRichText");
-
-	ui.SysMsg("???!?!?");
-
-
-	baseExperienceRichText:SetText(
-	'{@sti7}{s16}' ..
-	baseExperienceData.currentExperience .." / " .. baseExperienceData.requiredExperience .. "   " ..
-	baseExperienceData.currentPercent .. "    " ..
-	baseExperienceData.experienceGained .. "    " ..
-	baseExperienceData.killsTilNextLevel .. "    " ..
-	baseExperienceData.experiencePerHour .. "    ");
-
-	local classExperienceRichText = GET_CHILD(frame, 'classExperience', "ui::CRichText");
-
-	classExperienceRichText:SetText(
-	'{@sti7}{s16}' ..
-	classExperienceData.currentExperience .." / " .. classExperienceData.requiredExperience .. "   " ..
-	classExperienceData.currentPercent .. "    " ..
-	classExperienceData.experienceGained .. "    " ..
-	classExperienceData.killsTilNextLevel .. "    " ..
-	classExperienceData.experiencePerHour .. "    ");
-
 	--]]
 
-	PRINT_EXPERIENCE_DATA(baseExperienceData);
-	PRINT_EXPERIENCE_DATA(classExperienceData);
+	--PRINT_EXPERIENCE_DATA(baseExperienceData);
+	--PRINT_EXPERIENCE_DATA(classExperienceData);
 
 	local oldf = _G["ON_JOB_EXP_UPDATE_OLD"];
 	return oldf(frame, msg, str, exp, tableinfo)
+end
+
+function SET_EXPERIENCE_TEXT(experienceText, experienceData)
+	experienceText:SetText(
+		'{@sti7}{s16}' ..
+		comma_value(experienceData.currentExperience) .." / " .. comma_value(experienceData.requiredExperience) .. "   " ..
+		string.format("%.2f", experienceData.currentPercent) .. "%    " ..
+		comma_value(experienceData.experienceGained) .. "    " ..
+		comma_value(experienceData.killsTilNextLevel) .. "    " ..
+		comma_value(string.format("%.2f", experienceData.experiencePerHour)) .. "    "
+	);
 end
 
 function CALCULATE_EXPERIENCE_DATA(experienceData, elapsedTime)
@@ -262,6 +154,19 @@ end
 
 function CLOSE_EXP_VIEWER()
 	ui.SysMsg("Closed exp viewer!");
+end
+
+function comma_value(amount)
+	local formatted = amount
+
+	while true do
+		formatted, k = string.gsub(formatted, "^(-?%d+)(%d%d%d)", '%1,%2')
+		if (k == 0) then
+			break
+		end
+	end
+
+	return formatted
 end
 
 function isNil(object, name)
