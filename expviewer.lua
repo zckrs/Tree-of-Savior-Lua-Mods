@@ -24,6 +24,7 @@ function ExperienceData.new()
 	self.currentExperience = 0;
 	self.requiredExperience = 0;
 	self.previousCurrentExperience = 0;
+	self.previousRequiredExperience = 0;
 	self.currentPercent = 0;
 	self.lastExperienceGain = 0;
 	self.killsTilNextLevel = 0;
@@ -61,6 +62,9 @@ function ON_JOB_EXP_UPDATE_HOOKED(frame, msg, str, exp, tableinfo)
 	local currentClassLevel = tableinfo.level;
 
 	--[[SET BASE CURRENT/REQUIRED EXPERIENCE]]
+	baseExperienceData.previousRequiredExperience = baseExperienceData.requiredExperience;
+	classExperienceData.previousRequiredExperience = classExperienceData.requiredExperience;
+
 	baseExperienceData.currentExperience = session.GetEXP();
 	baseExperienceData.requiredExperience = session.GetMaxEXP();
 
@@ -83,15 +87,15 @@ function ON_JOB_EXP_UPDATE_HOOKED(frame, msg, str, exp, tableinfo)
 	--titleRichText:Move(50, 50);
 	--]]
 
+	local columnHeadersRichText = frame:GetChild("columnHeaders");
+	columnHeadersRichText:SetText("{@st41} Current / Required % Last TNL Hr");
+
 	--[[SET EXPERIENCE TEXT]]
 	local baseExperienceRichText = frame:GetChild("baseExperience");
 	SET_EXPERIENCE_TEXT(baseExperienceRichText, baseExperienceData);
 
 	local classExperienceRichText = frame:GetChild("classExperience");
 	SET_EXPERIENCE_TEXT(classExperienceRichText, classExperienceData);
-	--local classExperienceRichText = tolua.cast(classExperienceRichObject, "ui::CRichText");
-	--classExperienceRichText:SetOffset(10, 50);
-	--classExperienceRichText:Move(0, 0);
 
 	--[[
 	--file = io.open("C:/pcall-error.txt", "w");
@@ -115,17 +119,6 @@ function ON_JOB_EXP_UPDATE_HOOKED(frame, msg, str, exp, tableinfo)
 	return oldf(frame, msg, str, exp, tableinfo)
 end
 
-function SET_EXPERIENCE_TEXT(experienceText, experienceData)
-	experienceText:SetText(
-		'{@sti7}{s16}' ..
-		comma_value(experienceData.currentExperience) .." / " .. comma_value(experienceData.requiredExperience) .. "   " ..
-		string.format("%.2f", experienceData.currentPercent) .. "%    " ..
-		comma_value(experienceData.experienceGained) .. "    " ..
-		comma_value(experienceData.killsTilNextLevel) .. "    " ..
-		comma_value(string.format("%.2f", experienceData.experiencePerHour)) .. "    "
-	);
-end
-
 function CALCULATE_EXPERIENCE_DATA(experienceData, elapsedTime)
 	if experienceData.firstUpdate == true then
 		experienceData.previousCurrentExperience = experienceData.currentExperience;
@@ -134,14 +127,37 @@ function CALCULATE_EXPERIENCE_DATA(experienceData, elapsedTime)
 	end
 
 	--[[PERFORM CALCULATIONS]]
-	experienceData.lastExperienceGain = experienceData.currentExperience - experienceData.previousCurrentExperience;
+	--if we leveled up...
+	if experienceData.requiredExperience > experienceData.previousRequiredExperience then
+		experienceData.lastExperienceGain = (experienceData.previousRequiredExperience - experienceData.previousCurrentExperience) + experienceData.currentExperience;
+	else
+		experienceData.lastExperienceGain = experienceData.currentExperience - experienceData.previousCurrentExperience;
+	end
+
 	experienceData.experienceGained = experienceData.experienceGained + experienceData.lastExperienceGain;
 	experienceData.currentPercent = experienceData.currentExperience / experienceData.requiredExperience * 100;
-	experienceData.killsTilNextLevel = math.ceil((experienceData.requiredExperience - experienceData.currentExperience) / experienceData.lastExperienceGain);
+
+	if experienceData.lastExperienceGain == 0 then
+		experienceData.killsTilNextLevel = "INF";
+	else
+		experienceData.killsTilNextLevel = math.ceil((experienceData.requiredExperience - experienceData.currentExperience) / experienceData.lastExperienceGain);
+	end
+
 	experienceData.experiencePerHour = (experienceData.experienceGained * (SECONDS_IN_HOUR / elapsedTime));
 
 	--[[END OF UPDATES, SET PREVIOUS]]
 	experienceData.previousCurrentExperience = experienceData.currentExperience;
+end
+
+function SET_EXPERIENCE_TEXT(experienceText, experienceData)
+	experienceText:SetText(
+		'{@sti7}{s16}' ..
+		ADD_THOUSANDS_SEPARATOR(experienceData.currentExperience) .." / " .. ADD_THOUSANDS_SEPARATOR(experienceData.requiredExperience) .. "   " ..
+		string.format("%.2f", experienceData.currentPercent) .. "%    " ..
+		ADD_THOUSANDS_SEPARATOR(experienceData.lastExperienceGain) .. "    " ..
+		ADD_THOUSANDS_SEPARATOR(experienceData.killsTilNextLevel) .. "    " ..
+		ADD_THOUSANDS_SEPARATOR(string.format("%i", experienceData.experiencePerHour)) .. "    "
+	);
 end
 
 function PRINT_EXPERIENCE_DATA(experienceData)
@@ -156,7 +172,7 @@ function CLOSE_EXP_VIEWER()
 	ui.SysMsg("Closed exp viewer!");
 end
 
-function comma_value(amount)
+function ADD_THOUSANDS_SEPARATOR(amount)
 	local formatted = amount
 
 	while true do
