@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<uiframe name="expviewer" x="0" y="0" width="500" height="75" create="open">
+	<frame title="Experience Viewer" layout_gravity="center center" snapclient="true" snapframe="true"/>
+	<draw drawnotitlebar="false" drawtitlebar="false" drawframe="true"/>
+	<skin frameskin="test_Item_tooltip_normal"/>
+	<option hideable="true" closebutton="true" useimageitem="false"/>
+	<input hittest="true" movable="true" moveintitlebar="false" hittestframe="true"/>
+	<sound opensound="win_open" closesound="win_close"/>
+	<controls>
+		<richtext name="baseExperience" rect="15 40 3000 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="classExperience" rect="15 60 3000 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<!--
+		<groupbox name="experience_main" margin="820 0 0 0" rect="0 0 410 0" skin="test_Item_tooltip_equip" hittest="true" draw="true" updateparent="true" scrollbar="false" layout_gravity="left top">
+			<richtext name="currentRequiredBaseExperience" rect="0 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+			<richtext name="currentBasePercent" rect="50 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+			<richtext name="lastBaseExperienceGain" rect="100 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+			<richtext name="lastBaseExperienceGainPercent" rect="150 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+			<richtext name="baseKillsTilNextLevel" rect="200 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+			<richtext name="baseExperiencePerHour" rect="250 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+			<richtext name="baseTimeTilNextLevel" rect="300 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+
+			<richtext name="currentRequiredClassExperience" rect="0 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+			<richtext name="currentClassPercent" rect="50 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+			<richtext name="lastClassExperienceGain" rect="100 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+			<richtext name="lastClassExperienceGainPercent" rect="150 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+			<richtext name="classKillsTilNextLevel" rect="200 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+			<richtext name="classExperiencePerHour" rect="250 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+			<richtext name="ClassTimeTilNextLevel" rect="300 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		</groupbox>
+		-->
+	</controls>
+</uiframe>
