@@ -98,10 +98,8 @@ function ON_JOB_EXP_UPDATE_HOOKED(frame, msg, str, exp, tableinfo)
 	local currentTotalClassExperience = exp;
 	local currentClassLevel = tableinfo.level;
 
-	--SET BASE CURRENT/REQUIRED EXPERIENCE
-	_G["EXPERIENCE_VIEWER"]["classExperienceData"].previousRequiredExperience = _G["EXPERIENCE_VIEWER"]["classExperienceData"].requiredExperience;
-
 	--SET CLASS CURRENT/REQUIRED EXPERIENCE
+	_G["EXPERIENCE_VIEWER"]["classExperienceData"].previousRequiredExperience = _G["EXPERIENCE_VIEWER"]["classExperienceData"].requiredExperience;
 	_G["EXPERIENCE_VIEWER"]["classExperienceData"].currentExperience = exp - tableinfo.startExp;
 	_G["EXPERIENCE_VIEWER"]["classExperienceData"].requiredExperience = tableinfo.endExp - tableinfo.startExp;
 
