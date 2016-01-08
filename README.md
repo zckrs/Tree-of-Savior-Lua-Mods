@@ -1,5 +1,13 @@
 # Tree-of-Savior-Experience-Viewer-Lua-Mod
 
+A Tree of Savior native lua experience viewer.
+
+# Download
+
+[Get the latest release here](https://github.com/Excrulon/Tree-of-Savior-Experience-Viewer-Lua-Mod/releases)
+
+# Installation
+
 1. Extract the zip file.
 
 2. Copy expviewer.lua to your TOS_ROOT directory (the one that has the release/patch/data folders). This is one directory above the one that has Client_tos.exe.
