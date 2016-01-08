@@ -1,32 +1,66 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<uiframe name="expviewer" x="0" y="0" width="500" height="75" create="open">
-	<frame title="Experience Viewer" layout_gravity="center center" snapclient="true" snapframe="true"/>
+<uiframe name="expviewer" x="0" y="0" width="400" height="120">
+	<frame title="Experience Viewer" snapclient="true" snapframe="true" layout_gravity="center center" margin="0 335 50 0"/>
+    <option visible="true" alwaysVisible="true" closebutton="false" useimageitem="true" piptype="right" autoopen="true" hideable="false"/>
+	<input hittest="true" movable="true" moveintitlebar="false" hittestframe="true"/>
+    <layer layerlevel="31"/>
 	<draw drawnotitlebar="false" drawtitlebar="false" drawframe="true"/>
 	<skin frameskin="test_Item_tooltip_normal"/>
-	<option hideable="true" closebutton="true" useimageitem="false"/>
-	<input hittest="true" movable="true" moveintitlebar="false" hittestframe="true"/>
 	<sound opensound="win_open" closesound="win_close"/>
+
 	<controls>
-		<richtext name="baseExperience" rect="15 40 3000 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
-		<richtext name="classExperience" rect="15 60 3000 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<button name="startButton" rect="0 0 100 50" margin="15 50 0 0" layout_gravity="left top" LBtnUpArgNum="" LBtnDownScp="dofile(&apos;..\\expviewer.lua&apos;);" MouseOffAnim="btn_mouseoff" MouseOnAnim="btn_mouseover" caption="{@st66b}Start" clicksound="button_click_big" oversound="button_over" skin="test_pvp_btn" texttooltip="{@st59}Start{/}"/>
+		<button name="resetButton" rect="100 0 100 50" margin="15 50 0 0" layout_gravity="left top" LBtnUpArgNum="" LBtnDownScp="RESET();" MouseOffAnim="btn_mouseoff" MouseOnAnim="btn_mouseover" caption="{@st66b} Reset" clicksound="button_click_big" oversound="button_over" skin="test_pvp_btn" texttooltip="{@st59}Reset{/}"/>
+
+		<richtext name="columnHeaders" rect="0 0 500 25" margin="15 15 0 0" layout_gravity="left top" fixheight="false" fixwidth="false" hittest="true" resizebytext="true" textalign="left center" caption="{@sti7}{s16} Current | Required | % | Gained | TNL | Exp/Hr | Time TNL"/>
+
+		<richtext name="baseExperience" rect="0 0 500 25" margin="15 50 0 0" layout_gravity="left top" fixheight="false" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="classExperience" rect="0 0 500 25" margin="15 75 0 0" layout_gravity="left top" fixheight="false" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+
 		<!--
 		<groupbox name="experience_main" margin="820 0 0 0" rect="0 0 410 0" skin="test_Item_tooltip_equip" hittest="true" draw="true" updateparent="true" scrollbar="false" layout_gravity="left top">
-			<richtext name="currentRequiredBaseExperience" rect="0 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
-			<richtext name="currentBasePercent" rect="50 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
-			<richtext name="lastBaseExperienceGain" rect="100 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
-			<richtext name="lastBaseExperienceGainPercent" rect="150 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
-			<richtext name="baseKillsTilNextLevel" rect="200 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
-			<richtext name="baseExperiencePerHour" rect="250 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
-			<richtext name="baseTimeTilNextLevel" rect="300 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
-
-			<richtext name="currentRequiredClassExperience" rect="0 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
-			<richtext name="currentClassPercent" rect="50 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
-			<richtext name="lastClassExperienceGain" rect="100 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
-			<richtext name="lastClassExperienceGainPercent" rect="150 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
-			<richtext name="classKillsTilNextLevel" rect="200 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
-			<richtext name="classExperiencePerHour" rect="250 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
-			<richtext name="ClassTimeTilNextLevel" rect="300 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
 		</groupbox>
+		-->
+
+		<!-- headers -->
+		<!--
+		<richtext name="currentExperienceHeader" rect="0 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="experienceSlashHeader" rect="0 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="requiredClassExperienceHeader" rect="0 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="currentPercentHeader" rect="50 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="lastExperienceGainHeader" rect="100 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="lastExperienceGainPercentHeader" rect="150 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="killsTilNextLevelHeader" rect="200 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="experiencePerHourHeader" rect="250 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="timeTilNextLevelHeader" rect="300 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+
+		<richtext name="currentBaseExperience" rect="0 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="right center"/>
+		<richtext name="baseExperienceSlash" rect="0 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="center center"/>
+		<richtext name="requiredBaseExperience" rect="0 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="right center"/>
+		<richtext name="currentBasePercent" rect="50 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="lastBaseExperienceGain" rect="100 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="lastBaseExperienceGainPercent" rect="150 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="baseKillsTilNextLevel" rect="200 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="baseExperiencePerHour" rect="250 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="baseTimeTilNextLevel" rect="300 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+
+		<richtext name="currentClassExperience" rect="0 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="right center"/>
+		<richtext name="classExperienceSlash" rect="0 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="requiredClassExperience" rect="0 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="right center"/>
+		<richtext name="currentClassPercent" rect="50 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="lastClassExperienceGain" rect="100 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="lastClassExperienceGainPercent" rect="150 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="classKillsTilNextLevel" rect="200 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="classExperiencePerHour" rect="250 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+		<richtext name="classTimeTilNextLevel" rect="300 20 200 20" layout_gravity="left top" fixheight="true" fixwidth="false" hittest="true" resizebytext="true" textalign="left center"/>
+
+		<advlistbox name="BaseExperienceList" rect="0 20 200 20" layout_gravity="left top" drawgrid="true" heightperrow="24" maxrowcol="5000 4" scroll="true" widthpercol="100"/>
+		<advlistboxitem name="BaseCurrent" parent="BaseExperienceList" rect="0 0 50 20" caption="Current Base Experience" col="0" datatype="richtext" fontname="white_20_ol" row="0"/>
+		<advlistboxitem name="BaseSlash" parent="BaseExperienceList" rect="0 0 50 20" caption="Slash" col="1" datatype="richtext" fontname="white_20_ol" row="0"/>
+		<advlistboxitem name="BaseRequired" parent="BaseExperienceList" rect="0 0 50 20" caption="Required Base Experience" col="2" datatype="richtext" fontname="white_20_ol" row="0"/>
+		<advlistboxsetting parent="BaseExperienceList" col="0" colwidth="50" row="0" rowbgcolor="#4a443f" rowheight="50" startrow="1"/>
+		<advlistboxsetting parent="BaseExperienceList" col="1" colwidth="50" row="0" rowbgcolor="#4a443f" rowheight="50" startrow="1"/>
+		<advlistboxsetting parent="BaseExperienceList" col="2" colwidth="50" row="0" rowbgcolor="#4a443f" rowheight="50" startrow="1"/>
 		-->
 	</controls>
 </uiframe>
