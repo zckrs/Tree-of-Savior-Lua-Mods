@@ -75,17 +75,19 @@ if _G["EXPERIENCE_VIEWER"]["SECONDS_IN_HOUR"] == nil then
 end
 
 function CHARBASEINFO_ON_MSG_HOOKED(frame, msg, argStr, argNum)
-	_G["EXPERIENCE_VIEWER"]["elapsedTime"] = os.difftime(os.clock(), _G["EXPERIENCE_VIEWER"]["startTime"]);
+	if msg == 'EXP_UPDATE' then
+		_G["EXPERIENCE_VIEWER"]["elapsedTime"] = os.difftime(os.clock(), _G["EXPERIENCE_VIEWER"]["startTime"]);
 
-	--SET BASE CURRENT/REQUIRED EXPERIENCE
-	_G["EXPERIENCE_VIEWER"]["baseExperienceData"].previousRequiredExperience = _G["EXPERIENCE_VIEWER"]["baseExperienceData"].requiredExperience;
-	_G["EXPERIENCE_VIEWER"]["baseExperienceData"].currentExperience = session.GetEXP();
-	_G["EXPERIENCE_VIEWER"]["baseExperienceData"].requiredExperience = session.GetMaxEXP();
+		--SET BASE CURRENT/REQUIRED EXPERIENCE
+		_G["EXPERIENCE_VIEWER"]["baseExperienceData"].previousRequiredExperience = _G["EXPERIENCE_VIEWER"]["baseExperienceData"].requiredExperience;
+		_G["EXPERIENCE_VIEWER"]["baseExperienceData"].currentExperience = session.GetEXP();
+		_G["EXPERIENCE_VIEWER"]["baseExperienceData"].requiredExperience = session.GetMaxEXP();
 
-	--CALCULATE EXPERIENCE
-	CALCULATE_EXPERIENCE_DATA(_G["EXPERIENCE_VIEWER"]["baseExperienceData"], _G["EXPERIENCE_VIEWER"]["elapsedTime"]);
+		--CALCULATE EXPERIENCE
+		CALCULATE_EXPERIENCE_DATA(_G["EXPERIENCE_VIEWER"]["baseExperienceData"], _G["EXPERIENCE_VIEWER"]["elapsedTime"]);
 
-	UPDATE_UI("baseExperience", _G["EXPERIENCE_VIEWER"]["baseExperienceData"]);
+		UPDATE_UI("baseExperience", _G["EXPERIENCE_VIEWER"]["baseExperienceData"]);
+	end
 
 	local oldf = _G["CHARBASEINFO_ON_MSG_OLD"];
 	return oldf(frame, msg, str, exp, tableinfo);
