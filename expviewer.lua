@@ -1,15 +1,3 @@
-_G["EXPERIENCE_VIEWER"] = _G["EXPERIENCE_VIEWER"] or {};
-_G["EXPERIENCE_VIEWER"]["baseExperienceData"] = _G["EXPERIENCE_VIEWER"]["baseExperienceData"] or ExperienceData();
-_G["EXPERIENCE_VIEWER"]["classExperienceData"] = _G["EXPERIENCE_VIEWER"]["classExperienceData"] or ExperienceData();
-_G["EXPERIENCE_VIEWER"]["startTime"] = _G["EXPERIENCE_VIEWER"]["startTime"] or os.clock();
-_G["EXPERIENCE_VIEWER"]["elapsedTime"] = _G["EXPERIENCE_VIEWER"]["elapsedTime"] or os.difftime(os.clock(), _G["EXPERIENCE_VIEWER"]["startTime"]);
-_G["EXPERIENCE_VIEWER"]["SECONDS_IN_HOUR"] = _G["EXPERIENCE_VIEWER"]["SECONDS_IN_HOUR"] or 3600;
-_G["EXPERIENCE_VIEWER"]["headerTablePositions"] = _G["EXPERIENCE_VIEWER"]["headerTablePositions"] or { 0, 0, 0, 0, 0, 0 };
-_G["EXPERIENCE_VIEWER"]["baseTablePositions"] = _G["EXPERIENCE_VIEWER"]["baseTablePositions"] or { 0, 0, 0, 0, 0, 0 };
-_G["EXPERIENCE_VIEWER"]["classTablePositions"] = _G["EXPERIENCE_VIEWER"]["classTablePositions"] or { 0, 0, 0, 0, 0, 0 };
-_G["EXPERIENCE_VIEWER"]["frameWidths"] = _G["EXPERIENCE_VIEWER"]["frameWidths"] or { 0, 0, 0, 0, 0, 0 };
-_G["EXPERIENCE_VIEWER"]["padding"] = _G["EXPERIENCE_VIEWER"]["padding"] or 5;
-
 --[[START EXPERIENCE DATA]]
 local ExperienceData = {}
 ExperienceData.__index = ExperienceData
@@ -55,6 +43,17 @@ function ExperienceData:reset()
 end
 --[[END EXPERIENCE DATA]]
 
+_G["EXPERIENCE_VIEWER"] = {};
+_G["EXPERIENCE_VIEWER"]["baseExperienceData"] = _G["EXPERIENCE_VIEWER"]["baseExperienceData"] or ExperienceData();
+_G["EXPERIENCE_VIEWER"]["classExperienceData"] = _G["EXPERIENCE_VIEWER"]["classExperienceData"] or ExperienceData();
+_G["EXPERIENCE_VIEWER"]["startTime"] = _G["EXPERIENCE_VIEWER"]["startTime"] or os.clock();
+_G["EXPERIENCE_VIEWER"]["elapsedTime"] = _G["EXPERIENCE_VIEWER"]["elapsedTime"] or os.difftime(os.clock(), _G["EXPERIENCE_VIEWER"]["startTime"]);
+_G["EXPERIENCE_VIEWER"]["SECONDS_IN_HOUR"] = _G["EXPERIENCE_VIEWER"]["SECONDS_IN_HOUR"] or 3600;
+_G["EXPERIENCE_VIEWER"]["headerTablePositions"] = _G["EXPERIENCE_VIEWER"]["headerTablePositions"] or { 0, 0, 0, 0, 0, 0 };
+_G["EXPERIENCE_VIEWER"]["baseTablePositions"] = _G["EXPERIENCE_VIEWER"]["baseTablePositions"] or { 0, 0, 0, 0, 0, 0 };
+_G["EXPERIENCE_VIEWER"]["classTablePositions"] = _G["EXPERIENCE_VIEWER"]["classTablePositions"] or { 0, 0, 0, 0, 0, 0 };
+_G["EXPERIENCE_VIEWER"]["frameWidths"] = _G["EXPERIENCE_VIEWER"]["frameWidths"] or { 0, 0, 0, 0, 0, 0 };
+_G["EXPERIENCE_VIEWER"]["padding"] = _G["EXPERIENCE_VIEWER"]["padding"] or 5;
 
 -- local firstSilverUpdate = true;
 -- local currentSilver = 0;
@@ -186,6 +185,8 @@ function UPDATE_UI(experienceTextName, experienceData)
 				for i=0,5 do
 					local richText = expFrame:GetChild("header_"..i);
 
+					richText:Resize(0, 20);
+
 					if i == 0 then
 						richText:SetText("{@st41}{s18}Current / Required");
 					elseif i == 1 then
@@ -215,8 +216,11 @@ function UPDATE_UI(experienceTextName, experienceData)
 			if experienceTextName == "baseExperience" then
 				local xPosition = 15;
 				local yPosition = 49;
+
 				for i=0,5 do
 					local richText = expFrame:GetChild("base_"..i);
+
+					richText:Resize(0, 20);
 
 					if i == 0 then
 						richText:SetText("{@st41}{s16}" .. ADD_THOUSANDS_SEPARATOR(experienceData.currentExperience) .." / " .. ADD_THOUSANDS_SEPARATOR(experienceData.requiredExperience));
@@ -251,6 +255,8 @@ function UPDATE_UI(experienceTextName, experienceData)
 
 				for i=0,5 do
 					local richText = expFrame:GetChild("class_"..i);
+
+					richText:Resize(0, 20);
 
 					if i == 0 then
 						richText:SetText("{@st41}{s16}" .. ADD_THOUSANDS_SEPARATOR(experienceData.currentExperience) .." / " .. ADD_THOUSANDS_SEPARATOR(experienceData.requiredExperience));
@@ -318,7 +324,7 @@ function UPDATE_BUTTONS(expFrame)
 		startButton:SetOffset(5, 5);
 		startButton:SetText("{@sti7}{s16}S");
 		startButton:Resize(30, 30);
-		startButton:ShowWindow(0);
+		startButton:ShowWindow(1);
 	end
 end
 
