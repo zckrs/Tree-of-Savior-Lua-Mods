@@ -1,6 +1,14 @@
-if _G["EXPERIENCE_VIEWER"] == nil then
-	_G["EXPERIENCE_VIEWER"] = {};
-end
+_G["EXPERIENCE_VIEWER"] = _G["EXPERIENCE_VIEWER"] or {};
+_G["EXPERIENCE_VIEWER"]["baseExperienceData"] = _G["EXPERIENCE_VIEWER"]["baseExperienceData"] or ExperienceData();
+_G["EXPERIENCE_VIEWER"]["classExperienceData"] = _G["EXPERIENCE_VIEWER"]["classExperienceData"] or ExperienceData();
+_G["EXPERIENCE_VIEWER"]["startTime"] = _G["EXPERIENCE_VIEWER"]["startTime"] or os.clock();
+_G["EXPERIENCE_VIEWER"]["elapsedTime"] = _G["EXPERIENCE_VIEWER"]["elapsedTime"] or os.difftime(os.clock(), _G["EXPERIENCE_VIEWER"]["startTime"]);
+_G["EXPERIENCE_VIEWER"]["SECONDS_IN_HOUR"] = _G["EXPERIENCE_VIEWER"]["SECONDS_IN_HOUR"] or 3600;
+_G["EXPERIENCE_VIEWER"]["headerTablePositions"] = _G["EXPERIENCE_VIEWER"]["headerTablePositions"] or { 0, 0, 0, 0, 0, 0 };
+_G["EXPERIENCE_VIEWER"]["baseTablePositions"] = _G["EXPERIENCE_VIEWER"]["baseTablePositions"] or { 0, 0, 0, 0, 0, 0 };
+_G["EXPERIENCE_VIEWER"]["classTablePositions"] = _G["EXPERIENCE_VIEWER"]["classTablePositions"] or { 0, 0, 0, 0, 0, 0 };
+_G["EXPERIENCE_VIEWER"]["frameWidths"] = _G["EXPERIENCE_VIEWER"]["frameWidths"] or { 0, 0, 0, 0, 0, 0 };
+_G["EXPERIENCE_VIEWER"]["padding"] = _G["EXPERIENCE_VIEWER"]["padding"] or 5;
 
 --[[START EXPERIENCE DATA]]
 local ExperienceData = {}
@@ -47,13 +55,6 @@ function ExperienceData:reset()
 end
 --[[END EXPERIENCE DATA]]
 
-if _G["EXPERIENCE_VIEWER"]["baseExperienceData"] == nil then
-	_G["EXPERIENCE_VIEWER"]["baseExperienceData"] = ExperienceData();
-end
-
-if _G["EXPERIENCE_VIEWER"]["classExperienceData"] == nil then
-	_G["EXPERIENCE_VIEWER"]["classExperienceData"] = ExperienceData();
-end
 
 -- local firstSilverUpdate = true;
 -- local currentSilver = 0;
@@ -61,18 +62,6 @@ end
 -- local lastSilverGain = 0;
 -- local silverGained = 0;
 -- local silverPerHour = 0;
-
-if _G["EXPERIENCE_VIEWER"]["startTime"] == nil then
-	_G["EXPERIENCE_VIEWER"]["startTime"] = os.clock();
-end
-
-if _G["EXPERIENCE_VIEWER"]["elapsedTime"] == nil then
-	_G["EXPERIENCE_VIEWER"]["elapsedTime"] = os.difftime(os.clock(), _G["EXPERIENCE_VIEWER"]["startTime"]);
-end
-
-if _G["EXPERIENCE_VIEWER"]["SECONDS_IN_HOUR"] == nil then
-	_G["EXPERIENCE_VIEWER"]["SECONDS_IN_HOUR"] = 3600;
-end
 
 function UPDATE_WINDOW_POSITION()
 	local expFrame = ui.GetFrame("expviewer");
@@ -84,8 +73,6 @@ function UPDATE_WINDOW_POSITION()
 end
 
 function SET_WINDOW_POSITION()
-	ui.SysMsg("set window position");
-
 	local expFrame = ui.GetFrame("expviewer");
 
 	if expFrame ~= nil then
@@ -187,29 +174,141 @@ function UPDATE_UI(experienceTextName, experienceData)
 	if ui ~= nil then
 		local expFrame = ui.GetFrame("expviewer");
 
+		--old header text {@st41}
+		--{@st41}{s16}
+		--{@sti7}{s16}
+
 		if expFrame ~= nil then
-			local columnHeadersRichText = expFrame:GetChild("columnHeaders");
-			if columnHeadersRichText ~= nil then
-				columnHeadersRichText:SetText("{@sti7}{s16} Current | Required | % | Gained | TNL | Exp/Hr | Time TNL");
-			end
-
-			--SET EXPERIENCE TEXT
-			local experienceRichText = expFrame:GetChild(experienceTextName);
-			if experienceRichText ~= nil then
-				SET_EXPERIENCE_TEXT(experienceRichText, experienceData);
-			end
-
-			expFrame:Resize(experienceRichText:GetWidth() + 75, 108);
-
 			UPDATE_BUTTONS(expFrame);
 			UPDATE_WINDOW_POSITION();
+
+			--SET EXPERIENCE TEXT
+			if experienceTextName == "baseExperience" then
+				local xPosition = 15;
+				local yPosition = 14;
+
+				for i=0,5 do
+					local richText = expFrame:GetChild("header_"..i);
+
+					if i == 0 then
+						richText:SetText("{@st41}{s18}Current / Required");
+					elseif i == 1 then
+						richText:SetText("{@st41}{s18}%");
+					elseif i == 2 then
+						richText:SetText("{@st41}{s18}Gain");
+					elseif i == 3 then
+						richText:SetText("{@st41}{s18}TNL");
+					elseif i == 4 then
+						richText:SetText("{@st41}{s18}Exp/Hr");
+					elseif i == 5 then
+						richText:SetText("{@st41}{s18}ETA");
+					end
+
+					_G["EXPERIENCE_VIEWER"]["headerTablePositions"][i+1] = richText:GetWidth();
+
+					richText:Resize(richText:GetWidth(), 20);
+					richText:Move(0, 0);
+					richText:SetOffset(xPosition, yPosition);
+
+					local maxColumnWidth = CALCULATE_MAX_COLUMN_WIDTH(i);
+
+					xPosition = xPosition + maxColumnWidth + _G["EXPERIENCE_VIEWER"]["padding"];
+				end
+			end
+
+			if experienceTextName == "baseExperience" then
+				local xPosition = 15;
+				local yPosition = 49;
+				for i=0,5 do
+					local richText = expFrame:GetChild("base_"..i);
+
+					if i == 0 then
+						richText:SetText("{@st41}{s16}" .. ADD_THOUSANDS_SEPARATOR(experienceData.currentExperience) .." / " .. ADD_THOUSANDS_SEPARATOR(experienceData.requiredExperience));
+					elseif i == 1 then
+						richText:SetText("{@st41}{s16}" .. string.format("%.2f", experienceData.currentPercent) .. "%");
+					elseif i == 2 then
+						richText:SetText("{@st41}{s16}" .. ADD_THOUSANDS_SEPARATOR(experienceData.lastExperienceGain));
+					elseif i == 3 then
+						richText:SetText("{@st41}{s16}" .. ADD_THOUSANDS_SEPARATOR(experienceData.killsTilNextLevel));
+					elseif i == 4 then
+						richText:SetText("{@st41}{s16}" .. ADD_THOUSANDS_SEPARATOR(string.format("%i", experienceData.experiencePerHour)));
+					elseif i == 5 then
+						richText:SetText("{@st41}{s16}" .. experienceData.timeTilLevel);
+					end
+
+					_G["EXPERIENCE_VIEWER"]["baseTablePositions"][i+1] = richText:GetWidth();
+
+					richText:Resize(richText:GetWidth(), 20);
+					richText:Move(0, 0);
+					richText:SetOffset(xPosition, yPosition);
+
+					local maxColumnWidth = CALCULATE_MAX_COLUMN_WIDTH(i);
+
+					xPosition = xPosition + maxColumnWidth + _G["EXPERIENCE_VIEWER"]["padding"];
+				end
+			end
+
+
+			if experienceTextName == "classExperience" then
+				local xPosition = 15;
+				local yPosition = 74;
+
+				for i=0,5 do
+					local richText = expFrame:GetChild("class_"..i);
+
+					if i == 0 then
+						richText:SetText("{@st41}{s16}" .. ADD_THOUSANDS_SEPARATOR(experienceData.currentExperience) .." / " .. ADD_THOUSANDS_SEPARATOR(experienceData.requiredExperience));
+					elseif i == 1 then
+						richText:SetText("{@st41}{s16}" .. string.format("%.2f", experienceData.currentPercent) .. "%");
+					elseif i == 2 then
+						richText:SetText("{@st41}{s16}" .. ADD_THOUSANDS_SEPARATOR(experienceData.lastExperienceGain));
+					elseif i == 3 then
+						richText:SetText("{@st41}{s16}" .. ADD_THOUSANDS_SEPARATOR(experienceData.killsTilNextLevel));
+					elseif i == 4 then
+						richText:SetText("{@st41}{s16}" .. ADD_THOUSANDS_SEPARATOR(string.format("%i", experienceData.experiencePerHour)));
+					elseif i == 5 then
+						richText:SetText("{@st41}{s16}" .. experienceData.timeTilLevel);
+					end
+
+					_G["EXPERIENCE_VIEWER"]["classTablePositions"][i+1] = richText:GetWidth();
+
+					richText:Resize(richText:GetWidth(), 20);
+					richText:Move(0, 0);
+					richText:SetOffset(xPosition, yPosition);
+
+					local maxColumnWidth = CALCULATE_MAX_COLUMN_WIDTH(i);
+
+					xPosition = xPosition + maxColumnWidth + _G["EXPERIENCE_VIEWER"]["padding"];
+				end
+			end
+
+			local size = CALCULATE_FRAME_SIZE() + 20; --extra 20 for reset button
+			expFrame:Resize(size, 108);
 		end
 	end
 end
 
+function CALCULATE_MAX_COLUMN_WIDTH(tableIndex)
+	return math.max(_G["EXPERIENCE_VIEWER"]["headerTablePositions"][tableIndex+1], _G["EXPERIENCE_VIEWER"]["baseTablePositions"][tableIndex+1], _G["EXPERIENCE_VIEWER"]["classTablePositions"][tableIndex+1]);
+end
+
+function CALCULATE_FRAME_SIZE()
+	local frameWidth = 0;
+
+	for i = 1,6 do
+		local max = math.max(_G["EXPERIENCE_VIEWER"]["headerTablePositions"][i], _G["EXPERIENCE_VIEWER"]["baseTablePositions"][i], _G["EXPERIENCE_VIEWER"]["classTablePositions"][i]);
+		frameWidth = frameWidth + max + _G["EXPERIENCE_VIEWER"]["padding"];
+	end
+
+	frameWidth = frameWidth + (_G["EXPERIENCE_VIEWER"]["padding"] * 2);
+
+	return frameWidth;
+end
+
 function SET_EXPERIENCE_TEXT(experienceText, experienceData)
+	--{@sti7}{s16}
 	experienceText:SetText(
-		'{@sti7}{s16}' ..
+		'{@st41}{s16}' ..
 		ADD_THOUSANDS_SEPARATOR(experienceData.currentExperience) .." / " .. ADD_THOUSANDS_SEPARATOR(experienceData.requiredExperience) .. "   " ..
 		string.format("%.2f", experienceData.currentPercent) .. "%    " ..
 		ADD_THOUSANDS_SEPARATOR(experienceData.lastExperienceGain) .. "    " ..
@@ -217,6 +316,9 @@ function SET_EXPERIENCE_TEXT(experienceText, experienceData)
 		ADD_THOUSANDS_SEPARATOR(string.format("%i", experienceData.experiencePerHour)) .. "    " ..
 		experienceData.timeTilLevel
 	);
+
+	experienceText:SetText("");
+	experienceText:ShowWindow(0);
 end
 
 function UPDATE_BUTTONS(expFrame)
@@ -245,6 +347,8 @@ function PRINT_EXPERIENCE_DATA(experienceData)
 end
 
 function RESET()
+	ui.SysMsg("resetting experience session!");
+
 	_G["EXPERIENCE_VIEWER"]["startTime"] = os.clock();
 	_G["EXPERIENCE_VIEWER"]["elapsedTime"] = 0;
 
