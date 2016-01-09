@@ -2,30 +2,28 @@
 
 A Tree of Savior native lua experience viewer.
 
+# Disclaimer
+
+Use at your own risk!
+
 # Download
 
 [Get the latest release here](https://github.com/Excrulon/Tree-of-Savior-Experience-Viewer-Lua-Mod/releases)
 
 # Installation
 
-1. Extract the zip file.
+0. You may want to backup the existing SumAni.ipf in TOS_ROOT\data. If you do, copy it to some place outside your TOS_ROOT directory as the game may delete it.
 
-2. Copy expviewer.lua to your TOS_ROOT directory (the one that has the release/patch/data folders). This is one directory above the one that has Client_tos.exe.
+1. Extract the zip to your TOS_ROOT directory. expviewer.lua should be in TOS_ROOT and SumAni.ipf should be in TOS_ROOT\data.
 
-3. Copy dummy.ipf to the TOS_ROOT\data\ directory.
+2. Start game and login to character.
 
-4. Copy expviewer.ipf to clipboard and navigate to TOS_ROOT\data. Don't paste it yet.
+3. Press Start.
 
-5. Launch the ToS patcher.
+4. Play!
 
-6. Watch dummy.ipf in your TOS_ROOT\data\ directory. As soon as you see it deleted, paste expviewer.ipf immediately. I believe you have to paste it before the patcher says 100% but after it deletes dummy.ipf. You have about a 1-2 second window. It's not that hard.
-
-7. Load the game as usual. You should see the expviewer frame when your character loads.
-
-8. Press "Start" on
-
-You will have to do steps 3-7 every time you launch the game until me or someone can come up with a better way.
-
-You don't have to use dummy.ipf. You can wait for it to delete expviewer.ipf from a previous run or just wing it. It's just a method to make it easier for the first time.
+# Usage
 
 Small "R" button resets your session data.
+
+Pressing Reset or killing a mob will save your window. It will also save the frame's location for your current session.
