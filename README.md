@@ -22,6 +22,10 @@ A Tree of Savior native lua experience viewer.
 
 4. Play!
 
+# Uninstall
+
+Delete TOS_ROOT\expviewer.lua and TOS_ROOT\data\SumAni.ipf. I believe the patcher will redownload SumAni.ipf. If it doesn't, replace it with your backup.
+
 # Usage
 
 Small "R" button resets your session data.
