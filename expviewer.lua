@@ -74,6 +74,40 @@ if _G["EXPERIENCE_VIEWER"]["SECONDS_IN_HOUR"] == nil then
 	_G["EXPERIENCE_VIEWER"]["SECONDS_IN_HOUR"] = 3600;
 end
 
+function UPDATE_WINDOW_POSITION()
+	local expFrame = ui.GetFrame("expviewer");
+
+	if expFrame ~= nil then
+		_G["EXPERIENCE_VIEWER"]["POSITION_X"] = expFrame:GetX();
+		_G["EXPERIENCE_VIEWER"]["POSITION_Y"] = expFrame:GetY();
+	end
+end
+
+function SET_WINDOW_POSITION()
+	ui.SysMsg("set window position");
+
+	local expFrame = ui.GetFrame("expviewer");
+
+	if expFrame ~= nil then
+		expFrame:Move(0, 0);
+		expFrame:SetOffset(_G["EXPERIENCE_VIEWER"]["POSITION_X"], _G["EXPERIENCE_VIEWER"]["POSITION_Y"]);
+	end
+end
+
+function INIT()
+	UPDATE_WINDOW_POSITION();
+	UPDATE_UI("baseExperience", _G["EXPERIENCE_VIEWER"]["baseExperienceData"]);
+	UPDATE_UI("classExperience", _G["EXPERIENCE_VIEWER"]["classExperienceData"]);
+end
+
+function HEADSUPDISPLAY_ON_MSG_HOOKED(frame, msg, argStr, argNum)
+	SET_WINDOW_POSITION();
+	INIT();
+
+	local oldf = _G["HEADSUPDISPLAY_ON_MSG_OLD"];
+	return oldf(frame, msg, argStr, argNum);
+end
+
 function CHARBASEINFO_ON_MSG_HOOKED(frame, msg, argStr, argNum)
 	if msg == 'EXP_UPDATE' then
 		_G["EXPERIENCE_VIEWER"]["elapsedTime"] = os.difftime(os.clock(), _G["EXPERIENCE_VIEWER"]["startTime"]);
@@ -168,6 +202,7 @@ function UPDATE_UI(experienceTextName, experienceData)
 			expFrame:Resize(experienceRichText:GetWidth() + 75, 108);
 
 			UPDATE_BUTTONS(expFrame);
+			UPDATE_WINDOW_POSITION();
 		end
 	end
 end
@@ -194,14 +229,14 @@ function UPDATE_BUTTONS(expFrame)
 		resetButton:Resize(30, 30);
 	end
 
-	--MOVE INIT BUTTON TO TOPRIGHT CORNER
+	--MOVE START BUTTON TO TOPLEFT CORNER
 	local startButton = expFrame:GetChild("startButton");
 	if startButton ~= nil then
 		startButton:Move(0, 0);
 		startButton:SetOffset(5, 5);
 		startButton:SetText("{@sti7}{s16}S");
 		startButton:Resize(30, 30);
-		startButton:ShowWindow(0);
+		startButton:ShowWindow(1);
 	end
 end
 
@@ -210,8 +245,6 @@ function PRINT_EXPERIENCE_DATA(experienceData)
 end
 
 function RESET()
-	ui.SysMsg("resetting experience session!");
-
 	_G["EXPERIENCE_VIEWER"]["startTime"] = os.clock();
 	_G["EXPERIENCE_VIEWER"]["elapsedTime"] = 0;
 
@@ -224,6 +257,8 @@ function RESET()
 
 	_G["EXPERIENCE_VIEWER"]["baseExperienceData"]:reset();
 	_G["EXPERIENCE_VIEWER"]["classExperienceData"]:reset();
+
+	UPDATE_WINDOW_POSITION();
 end
 
 function ADD_THOUSANDS_SEPARATOR(amount)
@@ -274,8 +309,20 @@ else
 	_G[jobExperienceUpdateHook] = ON_JOB_EXP_UPDATE_HOOKED;
 end
 
+local hudHook = "HEADSUPDISPLAY_ON_MSG";
+
+if _G["HEADSUPDISPLAY_ON_MSG_OLD"] == nil then
+	_G["HEADSUPDISPLAY_ON_MSG_OLD"] = _G[hudHook];
+	_G[hudHook] = HEADSUPDISPLAY_ON_MSG_HOOKED;
+else
+	_G[hudHook] = HEADSUPDISPLAY_ON_MSG_HOOKED;
+end
+
 --ON_JOB_EXP_UPDATE
 --DRAW_TOTAL_VIS
+--UPDATE_MINIMAP
+--EVENT_UPDATE_TIME
+--PUB_CHARFRAME_UPDATE
 
 --CALCULATE SILVER
 --[[
@@ -294,5 +341,7 @@ else
 	--ui.SysMsg("Silver/Hour: " .. silverPerHour .. "    Gained: " .. silverGained .. "    LastGain: " .. lastSilverGain);
 end
 --]]
+
+INIT();
 
 ui.SysMsg("Excrulon's expviewer loaded!");
