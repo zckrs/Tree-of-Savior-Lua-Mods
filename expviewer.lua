@@ -174,16 +174,12 @@ function UPDATE_UI(experienceTextName, experienceData)
 	if ui ~= nil then
 		local expFrame = ui.GetFrame("expviewer");
 
-		--old header text {@st41}
-		--{@st41}{s16}
-		--{@sti7}{s16}
-
 		if expFrame ~= nil then
 			UPDATE_BUTTONS(expFrame);
 			UPDATE_WINDOW_POSITION();
 
 			--SET EXPERIENCE TEXT
-			if experienceTextName == "baseExperience" then
+			if experienceTextName == "baseExperience" or experienceTextName == "classExperience" then
 				local xPosition = 15;
 				local yPosition = 14;
 
@@ -305,22 +301,6 @@ function CALCULATE_FRAME_SIZE()
 	return frameWidth;
 end
 
-function SET_EXPERIENCE_TEXT(experienceText, experienceData)
-	--{@sti7}{s16}
-	experienceText:SetText(
-		'{@st41}{s16}' ..
-		ADD_THOUSANDS_SEPARATOR(experienceData.currentExperience) .." / " .. ADD_THOUSANDS_SEPARATOR(experienceData.requiredExperience) .. "   " ..
-		string.format("%.2f", experienceData.currentPercent) .. "%    " ..
-		ADD_THOUSANDS_SEPARATOR(experienceData.lastExperienceGain) .. "    " ..
-		ADD_THOUSANDS_SEPARATOR(experienceData.killsTilNextLevel) .. "    " ..
-		ADD_THOUSANDS_SEPARATOR(string.format("%i", experienceData.experiencePerHour)) .. "    " ..
-		experienceData.timeTilLevel
-	);
-
-	experienceText:SetText("");
-	experienceText:ShowWindow(0);
-end
-
 function UPDATE_BUTTONS(expFrame)
 	--MOVE RESET BUTTON TO TOPRIGHT CORNER
 	local resetButton = expFrame:GetChild("resetButton");
@@ -338,7 +318,7 @@ function UPDATE_BUTTONS(expFrame)
 		startButton:SetOffset(5, 5);
 		startButton:SetText("{@sti7}{s16}S");
 		startButton:Resize(30, 30);
-		startButton:ShowWindow(1);
+		startButton:ShowWindow(0);
 	end
 end
 
@@ -421,12 +401,6 @@ if _G["HEADSUPDISPLAY_ON_MSG_OLD"] == nil then
 else
 	_G[hudHook] = HEADSUPDISPLAY_ON_MSG_HOOKED;
 end
-
---ON_JOB_EXP_UPDATE
---DRAW_TOTAL_VIS
---UPDATE_MINIMAP
---EVENT_UPDATE_TIME
---PUB_CHARFRAME_UPDATE
 
 --CALCULATE SILVER
 --[[
