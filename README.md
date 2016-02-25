@@ -2,7 +2,7 @@
 
 A Tree of Savior native lua experience viewer.
 
-[[http://i.imgur.com/FFCYumq.jpg]]
+![Tree of Savior Experience Viewer](http://i.imgur.com/FFCYumq.jpg)
 
 # Disclaimer
 
