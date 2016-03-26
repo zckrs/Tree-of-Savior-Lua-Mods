@@ -10,25 +10,53 @@ A Tree of Savior native lua experience viewer.
 
 # Installation
 
-0. You may want to backup the existing SumAni.ipf in TOS_ROOT\data. If you do, copy it to some place outside your TOS_ROOT directory as the game may delete it.
-
 1. Extract the zip to your TOS_ROOT directory. expviewer.lua should be in TOS_ROOT and SumAni.ipf should be in TOS_ROOT\data.
 
 2. Start game and login to character.
 
-3. Press Start.
+3. Press Start on the UI window.
 
-4. Play!
+4. Move window to the desired position and press "R" to save the position.
+
+5. Play!
 
 # Uninstall
 
-Delete TOS_ROOT\expviewer.lua and TOS_ROOT\data\SumAni.ipf. I believe the patcher will redownload SumAni.ipf. If it doesn't, replace it with your backup.
+Delete TOS_ROOT\expviewer.lua and TOS_ROOT\data\SumAni.ipf. The patcher will redownload SumAni.ipf.
 
 # Usage
 
-Small "R" button resets your session data.
+Small "R" (Reset) button resets your session data.
 
-Pressing Reset or killing a mob will save your window. It will also save the frame's location for your current session.
+Pressing "R" (Reset) will also save the frame's location for your current session.
+
+To configure which columns are visible, open expviewer.lua with any text editor once you have installed it to the right place. You will see these settings at the top of the file:
+
+```
+settings = {
+	showCurrentRequiredExperience = "true";
+	showCurrentPercent = "true";
+	showLastGainedExperience = "true";
+	showKillsTilNextLevel = "true";
+	showExperiencePerHour = "true";
+	showTimeTilLevel = "true";
+};
+```
+
+Replace the values inside the quotation marks with something else. "false" works perfect, but the code only checks if it's "true" in order to display it.
+
+Here's an example that only displays current/required experience, kills til next level, and experience/hour:
+
+```
+settings = {
+	showCurrentRequiredExperience = "true";
+	showCurrentPercent = "false";
+	showLastGainedExperience = "false";
+	showKillsTilNextLevel = "true";
+	showExperiencePerHour = "true";
+	showTimeTilLevel = "false";
+};
+```
 
 # Disclaimer
 
