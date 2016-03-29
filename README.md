@@ -65,3 +65,5 @@ IMC has said that addons are allowed. https://forum.treeofsavior.com/t/stance-on
 ![Addons 1](http://i.imgur.com/oJ4B99B.png)
 
 ![Addons 2](http://i.imgur.com/rxLmSoa.png)
+
+If they change their mind, please let me know directly (via official forums so that I know it's them) and I'll delete this and stop distributing/working on it.
