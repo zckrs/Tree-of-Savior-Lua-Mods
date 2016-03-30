@@ -95,11 +95,11 @@ function INIT()
 end
 
 function HEADSUPDISPLAY_ON_MSG_HOOKED(frame, msg, argStr, argNum)
+	local oldf = _G["HEADSUPDISPLAY_ON_MSG_OLD"];
+	oldf(frame, msg, argStr, argNum);
+
 	MOVE_WINDOW_TO_STORED_POSITION();
 	INIT();
-
-	local oldf = _G["HEADSUPDISPLAY_ON_MSG_OLD"];
-	return oldf(frame, msg, argStr, argNum);
 end
 
 function CHARBASEINFO_ON_MSG_HOOKED(frame, msg, argStr, argNum)
