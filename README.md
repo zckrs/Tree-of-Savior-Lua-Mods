@@ -10,7 +10,7 @@ A Tree of Savior native lua experience viewer.
 
 # Installation
 
-1. Extract the zip to your TOS_ROOT directory. expviewer.lua should be in TOS_ROOT and SumAni.ipf should be in TOS_ROOT\data.
+1. Extract the zip to your TOS_ROOT (C:\Program Files (x86)\Steam\steamapps\common\TreeOfSavior for me) directory. expviewer.lua should be in TOS_ROOT and SumAni.ipf should be in TOS_ROOT\data.
 
 2. Start game and login to character.
 
