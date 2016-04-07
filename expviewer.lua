@@ -5,7 +5,7 @@ settings = {
 	showKillsTilNextLevel = "true";
 	showExperiencePerHour = "true";
 	showTimeTilLevel = "true";
-	enableMapViewer = "false";
+	enableMapViewer = "true";
 };
 
 --[[START EXPERIENCE DATA]]
