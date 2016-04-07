@@ -16,19 +16,19 @@ A Tree of Savior native lua experience viewer.
 
 3. Press Start on the UI window.
 
-4. Move window to the desired position and press "R" to save the position.
+4. Move window to the desired position and press "R" to save the position. If you move it without pressing "R" afterwards, it will move back to where it was.
 
 5. Play!
 
 # Uninstall
 
-Delete TOS_ROOT\expviewer.lua and TOS_ROOT\data\SumAni.ipf. The patcher will redownload SumAni.ipf.
+Delete expviewer.lua and data\SumAni.ipf. The patcher will redownload SumAni.ipf.
 
 # Usage
 
 Small "R" (Reset) button resets your session data.
 
-Pressing "R" (Reset) will also save the frame's location for your current session.
+Pressing "R" (Reset) will also save the frame's location for your current session.  If you move it without pressing "R" afterwards, it will move back to where it was.
 
 To configure which columns are visible, open expviewer.lua with any text editor once you have installed it to the right place. You will see these settings at the top of the file:
 
