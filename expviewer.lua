@@ -5,6 +5,7 @@ settings = {
 	showKillsTilNextLevel = "true";
 	showExperiencePerHour = "true";
 	showTimeTilLevel = "true";
+	enableMapViewer = "false";
 };
 
 --[[START EXPERIENCE DATA]]
@@ -31,8 +32,6 @@ function ExperienceData.new()
 	self.experiencePerHour = 0;
 	self.experienceGained = 0;
 	self.timeTilLevel = 0;
-
-	-- self.reset();
 
 	return self
 end
@@ -63,13 +62,6 @@ _G["EXPERIENCE_VIEWER"]["baseTablePositions"] = _G["EXPERIENCE_VIEWER"]["baseTab
 _G["EXPERIENCE_VIEWER"]["classTablePositions"] = _G["EXPERIENCE_VIEWER"]["classTablePositions"] or { 0, 0, 0, 0, 0, 0 };
 _G["EXPERIENCE_VIEWER"]["frameWidths"] = _G["EXPERIENCE_VIEWER"]["frameWidths"] or { 0, 0, 0, 0, 0, 0 };
 _G["EXPERIENCE_VIEWER"]["padding"] = _G["EXPERIENCE_VIEWER"]["padding"] or 5;
-
--- local firstSilverUpdate = true;
--- local currentSilver = 0;
--- local previousSilver = 0;
--- local lastSilverGain = 0;
--- local silverGained = 0;
--- local silverPerHour = 0;
 
 function SET_WINDOW_POSITION_GLOBAL()
 	local expFrame = ui.GetFrame("expviewer");
@@ -556,24 +548,66 @@ else
 	_G[hudHook] = HEADSUPDISPLAY_ON_MSG_HOOKED;
 end
 
---CALCULATE SILVER
---[[
-if firstSilverUpdate == true then
-	previousSilver = GET_TOTAL_MONEY();
-	currentSilver = previousSilver;
-	firstSilverUpdate = false;
-else
-	previousSilver = currentSilver;
-	currentSilver = GET_TOTAL_MONEY();
-
-	lastSilverGain = currentSilver - previousSilver;
-	silverGained = silverGained + lastSilverGain;
-	silverPerHour = (silverGained * (SECONDS_IN_HOUR / _G["EXPERIENCE_VIEWER"]["elapsedTime"]));
-
-	--ui.SysMsg("Silver/Hour: " .. silverPerHour .. "    Gained: " .. silverGained .. "    LastGain: " .. lastSilverGain);
+--MAP VIEWER
+function MAP_OPEN_HOOKED(frame)
+	_G["MAP_OPEN_OLD"](frame);
+	DRAW_RED_FOG(frame);
 end
---]]
+
+function REVEAL_MAP_PICTURE_HOOKED(frame, mapName, info, i, forMinimap)
+	_G["REVEAL_MAP_PICTURE_OLD"](frame, mapName, info, i, forMinimap);
+	DRAW_RED_FOG(frame);
+end
+
+function DRAW_RED_FOG(frame)
+	HIDE_CHILD_BYNAME(frame, "_SAMPLE_");
+	local px, py = GET_MAPFOG_PIC_OFFSET(frame);
+	local mapPic = GET_CHILD(frame, "map", 'ui::CPicture');
+
+	local list = session.GetMapFogList(session.GetMapName());
+	local cnt = list:Count();
+	for i = 0 , cnt - 1 do
+		local info = list:PtrAt(i);
+
+		if info.revealed == 0 then
+			local name = string.format("_SAMPLE_%d", i);
+			local pic = frame:CreateOrGetControl("picture", name, info.x + px, info.y + py, info.w, info.h);
+			tolua.cast(pic, "ui::CPicture");
+			pic:ShowWindow(1);
+			pic:SetImage("fullred");
+			pic:SetEnableStretch(1);
+			pic:SetAlpha(30.0);
+			pic:EnableHitTest(0);
+
+			if info.selected == 1 then
+				pic:ShowWindow(0);
+			end
+		end
+	end
+
+	frame:Invalidate();
+end
+
+if settings.enableMapViewer == "true" then
+	local mapOpenHook = "MAP_OPEN";
+
+	if _G["MAP_OPEN_OLD"] == nil then
+		_G["MAP_OPEN_OLD"] = _G[mapOpenHook];
+		_G[mapOpenHook] = MAP_OPEN_HOOKED;
+	else
+		_G[mapOpenHook] = MAP_OPEN_HOOKED;
+	end
+
+	local mapFogHook = "REVEAL_MAP_PICTURE";
+
+	if _G["REVEAL_MAP_PICTURE_OLD"] == nil then
+		_G["REVEAL_MAP_PICTURE_OLD"] = _G[mapFogHook];
+		_G[mapFogHook] = REVEAL_MAP_PICTURE_HOOKED;
+	else
+		_G[mapFogHook] = REVEAL_MAP_PICTURE_HOOKED;
+	end
+end
 
 INIT();
 
-ui.SysMsg("Excrulon's expviewer loaded!");
+ui.SysMsg("Excrulon's expviewer and mapviewer loaded! (v1.5)");
