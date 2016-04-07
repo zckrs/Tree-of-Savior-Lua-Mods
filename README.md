@@ -10,7 +10,7 @@ A Tree of Savior native lua experience viewer.
 
 # Installation
 
-1. Extract the zip to your TOS_ROOT (C:\Program Files (x86)\Steam\steamapps\common\TreeOfSavior for me) directory. expviewer.lua should be in TOS_ROOT and SumAni.ipf should be in TOS_ROOT\data.
+1. Extract the zip to your Tree of Savior directory (C:\Program Files (x86)\Steam\steamapps\common\TreeOfSavior for me). Say yes to overwrite any files. expviewer.lua should be in the root directory and SumAni.ipf should be in the data.
 
 2. Start game and login to character.
 
@@ -34,27 +34,29 @@ To configure which columns are visible, open expviewer.lua with any text editor 
 
 ```
 settings = {
-	showCurrentRequiredExperience = "true";
-	showCurrentPercent = "true";
-	showLastGainedExperience = "true";
-	showKillsTilNextLevel = "true";
-	showExperiencePerHour = "true";
-	showTimeTilLevel = "true";
+	showCurrentRequiredExperience = true;
+	showCurrentPercent = true;
+	showLastGainedExperience = true;
+	showKillsTilNextLevel = true;
+	showExperiencePerHour = true;
+	showTimeTilLevel = true;
+	enableMapViewer = true;
 };
 ```
 
-Replace the values inside the quotation marks with something else. "false" works perfect, but the code only checks if it's "true" in order to display it.
+Set the values to either true or false depending on what you want.
 
-Here's an example that only displays current/required experience, kills til next level, and experience/hour:
+Here's an example that only displays current/required experience, kills til next level, and experience/hour with map viewer enabled:
 
 ```
 settings = {
-	showCurrentRequiredExperience = "true";
-	showCurrentPercent = "false";
-	showLastGainedExperience = "false";
-	showKillsTilNextLevel = "true";
-	showExperiencePerHour = "true";
-	showTimeTilLevel = "false";
+	showCurrentRequiredExperience = true;
+	showCurrentPercent = false;
+	showLastGainedExperience = false;
+	showKillsTilNextLevel = true;
+	showExperiencePerHour = true;
+	showTimeTilLevel = false;
+	enableMapViewer = true;
 };
 ```
 
