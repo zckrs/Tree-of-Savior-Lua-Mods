@@ -477,14 +477,6 @@ function RESET()
 
 	_G["EXPERIENCE_VIEWER"]["startTime"] = os.clock();
 	_G["EXPERIENCE_VIEWER"]["elapsedTime"] = 0;
-
-	firstSilverUpdate = true;
-	currentSilver = 0;
-	previousSilver = 0;
-	lastSilverGain = 0;
-	silverGained = 0;
-	silverPerHour = 0;
-
 	_G["EXPERIENCE_VIEWER"]["baseExperienceData"]:reset();
 	_G["EXPERIENCE_VIEWER"]["classExperienceData"]:reset();
 
