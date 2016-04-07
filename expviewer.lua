@@ -1,11 +1,11 @@
 settings = {
-	showCurrentRequiredExperience = "true";
-	showCurrentPercent = "true";
-	showLastGainedExperience = "true";
-	showKillsTilNextLevel = "true";
-	showExperiencePerHour = "true";
-	showTimeTilLevel = "true";
-	enableMapViewer = "true";
+	showCurrentRequiredExperience = true;
+	showCurrentPercent = true;
+	showLastGainedExperience = true;
+	showKillsTilNextLevel = true;
+	showExperiencePerHour = true;
+	showTimeTilLevel = true;
+	enableMapViewer = true;
 };
 
 --[[START EXPERIENCE DATA]]
@@ -408,7 +408,7 @@ function UPDATE_UI(experienceTextName, experienceData)
 end
 
 function UPDATE_CELL(i, richTextComponent, label, showField, xPosition, yPosition, columnKey)
-	if showField == "true" then
+	if showField then
 		richTextComponent:SetText(label);
 
 		_G["EXPERIENCE_VIEWER"][columnKey][i+1] = richTextComponent:GetWidth();
@@ -588,7 +588,7 @@ function DRAW_RED_FOG(frame)
 	frame:Invalidate();
 end
 
-if settings.enableMapViewer == "true" then
+if settings.enableMapViewer then
 	local mapOpenHook = "MAP_OPEN";
 
 	if _G["MAP_OPEN_OLD"] == nil then
