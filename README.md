@@ -22,13 +22,9 @@ A Tree of Savior native lua experience viewer.
 
 # Uninstall
 
-Delete expviewer.lua and data\SumAni.ipf. The patcher will redownload SumAni.ipf.
+Delete the addons folder and data\SumAni.ipf. The patcher will redownload SumAni.ipf.
 
 # Usage
-
-Small "R" (Reset) button resets your session data.
-
-Pressing "R" (Reset) will also save the frame's location for your current session.  If you move it without pressing "R" afterwards, it will move back to where it was.
 
 To configure which columns are visible, open expviewer.lua with any text editor once you have installed it to the right place. You will see these settings at the top of the file:
 
@@ -40,7 +36,6 @@ settings = {
 	showKillsTilNextLevel = true;
 	showExperiencePerHour = true;
 	showTimeTilLevel = true;
-	enableMapViewer = true;
 };
 ```
 
@@ -56,9 +51,10 @@ settings = {
 	showKillsTilNextLevel = true;
 	showExperiencePerHour = true;
 	showTimeTilLevel = false;
-	enableMapViewer = true;
 };
 ```
+
+To remove an addon, delete or comment out the dofile line in addons/addonloader.lua.
 
 # Disclaimer
 
