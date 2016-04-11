@@ -30,7 +30,7 @@ Delete the addons folder and data\SumAni.ipf. The patcher will redownload SumAni
 
 # Usage
 
-To configure which columns are visible, open expviewer.lua with any text editor once you have installed it to the right place. You will see these settings at the top of the file:
+To configure which columns are visible on the expviewer, open addons/expviewer/expviewer.lua with any text editor once you have installed it to the right place. You will see these settings at the top of the file:
 
 ```
 settings = {
