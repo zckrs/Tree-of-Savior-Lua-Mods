@@ -2,7 +2,7 @@
 
 A Tree of Savior native lua experience viewer.
 
-![Tree of Savior Experience Viewer](http://i.imgur.com/FFCYumq.jpg)
+![Tree of Savior Experience Viewer](http://i.imgur.com/z8xXMvA.jpg)
 
 # Download
 
@@ -10,15 +10,31 @@ A Tree of Savior native lua experience viewer.
 
 # Installation
 
-1. Extract the zip to your Tree of Savior directory (C:\Program Files (x86)\Steam\steamapps\common\TreeOfSavior for me). Say yes to overwrite any files. expviewer.lua should be in the root directory and SumAni.ipf should be in the data.
+1. Extract the zip to your Tree of Savior directory (C:\Program Files (x86)\Steam\steamapps\common\TreeOfSavior for me). Say yes to overwrite any files. An addons folder should be in the root directory and SumAni.ipf should be in the data folder. Your directories should look something like this:
+
+C:\Program Files (x86)\Steam\steamapps\common\TreeOfSavior
+
+-addons
+--addonloader.lua
+--utility.lua
+--expviewer
+--mapfogviewer
+--monsterframes
+--monstertracker
+--...
+-data
+--SumAni.ipf
+-patch
+-release
+
 
 2. Start game and login to character.
 
-3. Press Start on the UI window.
+3. Press the "Load Addons" button. It should disappear.
 
-4. Move window to the desired position and press "R" to save the position. If you move it without pressing "R" afterwards, it will move back to where it was.
+![Load Addons](http://i.imgur.com/8ujqiMq.jpg)
 
-5. Play!
+4. Play!
 
 # Uninstall
 
