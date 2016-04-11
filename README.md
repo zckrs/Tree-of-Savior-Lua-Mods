@@ -1,4 +1,4 @@
-# Tree-of-Savior-Experience-Viewer-Lua-Mod
+# Tree of Savior Lua Mods
 
 A Tree of Savior native lua experience viewer.
 
@@ -18,9 +18,7 @@ A Tree of Savior native lua experience viewer.
 
 3. Press the "Load Addons" button. It should disappear.
 
-![Load Addons](http://i.imgur.com/8ujqiMq.jpg)
-
-4. Play!
+4. ![Play!](http://i.imgur.com/z8xXMvA.jpg)
 
 # Uninstall
 
