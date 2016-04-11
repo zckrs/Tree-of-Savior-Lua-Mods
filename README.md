@@ -10,15 +10,17 @@ A Tree of Savior native lua experience viewer.
 
 # Installation
 
-1. Extract the zip to your Tree of Savior directory (C:\Program Files (x86)\Steam\steamapps\common\TreeOfSavior for me). Say yes to overwrite any files. An addons folder should be in the root directory and SumAni.ipf should be in the data folder. Your directories should look something like this:
+ Extract the zip to your Tree of Savior directory (C:\Program Files (x86)\Steam\steamapps\common\TreeOfSavior for me). Say yes to overwrite any files. An addons folder should be in the root directory and SumAni.ipf should be in the data folder. Your directories should look something like this:
 
 ![Load Addons](http://i.imgur.com/wme1kOc.png)
 
-2. Start game and login to character.
+Start game and login to character.
 
-3. Press the "Load Addons" button. It should disappear.
+Press the "Load Addons" button. It should disappear.
 
-4. ![Play!](http://i.imgur.com/z8xXMvA.jpg)
+Play!
+ 
+![Play!](http://i.imgur.com/z8xXMvA.jpg)
 
 # Uninstall
 
