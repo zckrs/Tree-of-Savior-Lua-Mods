@@ -5,7 +5,6 @@ settings = {
 	showKillsTilNextLevel = true;
 	showExperiencePerHour = true;
 	showTimeTilLevel = true;
-	enableMapViewer = true;
 };
 
 --[[START EXPERIENCE DATA]]
@@ -70,6 +69,8 @@ function SET_WINDOW_POSITION_GLOBAL()
 		_G["EXPERIENCE_VIEWER"]["POSITION_X"] = expFrame:GetX();
 		_G["EXPERIENCE_VIEWER"]["POSITION_Y"] = expFrame:GetY();
 	end
+
+	SAVE_POSITION_TO_FILE(expFrame:GetX(), expFrame:GetY());
 end
 
 function MOVE_WINDOW_TO_STORED_POSITION()
@@ -82,6 +83,10 @@ function MOVE_WINDOW_TO_STORED_POSITION()
 end
 
 function INIT()
+	LOAD_POSITION_FROM_FILE();
+	local expFrame = ui.GetFrame("expviewer");
+	expFrame:ShowWindow(1);
+	UPDATE_BUTTONS(expFrame);
 	UPDATE_UI("baseExperience", _G["EXPERIENCE_VIEWER"]["baseExperienceData"]);
 	UPDATE_UI("classExperience", _G["EXPERIENCE_VIEWER"]["classExperienceData"]);
 end
@@ -483,33 +488,29 @@ function RESET()
 	SET_WINDOW_POSITION_GLOBAL();
 end
 
-function ADD_THOUSANDS_SEPARATOR(amount)
-	local formatted = amount
+function LOAD_POSITION_FROM_FILE()
+	local file, error = io.open("../addons/expviewer/settings.txt", "r");
 
-	while true do
-		formatted, k = string.gsub(formatted, "^(-?%d+)(%d%d%d)", '%1,%2')
-		if (k == 0) then
-			break
-		end
+	if error then
+		return;
 	end
 
-	return formatted
+	_G["EXPERIENCE_VIEWER"]["POSITION_X"] = file:read();
+	_G["EXPERIENCE_VIEWER"]["POSITION_Y"] = file:read();
+
+	MOVE_WINDOW_TO_STORED_POSITION();
 end
 
-function LEFT_PAD(str, len, char)
-	if char == nil then
-		char = ' '
+function SAVE_POSITION_TO_FILE(xPosition, yPosition)
+	local file, error = io.open("../addons/expviewer/settings.txt", "w");
+
+	if error then
+		return;
 	end
 
-	return string.rep(char, len - #str) .. str
-end
-
-function RIGHT_PAD(str, len, char)
-	if char == nil then
-		char = ' '
-	end
-
-	return str .. string.rep(char, len - #str)
+	file:write(xPosition .. "\n" .. yPosition);
+	file:flush();
+	file:close();
 end
 
 --LOAD HOOKS - this must go at the end of the script so that the methods are defined
@@ -540,66 +541,6 @@ else
 	_G[hudHook] = HEADSUPDISPLAY_ON_MSG_HOOKED;
 end
 
---MAP VIEWER
-function MAP_OPEN_HOOKED(frame)
-	_G["MAP_OPEN_OLD"](frame);
-	DRAW_RED_FOG(frame);
-end
-
-function REVEAL_MAP_PICTURE_HOOKED(frame, mapName, info, i, forMinimap)
-	_G["REVEAL_MAP_PICTURE_OLD"](frame, mapName, info, i, forMinimap);
-	DRAW_RED_FOG(frame);
-end
-
-function DRAW_RED_FOG(frame)
-	HIDE_CHILD_BYNAME(frame, "_SAMPLE_");
-	local px, py = GET_MAPFOG_PIC_OFFSET(frame);
-	local mapPic = GET_CHILD(frame, "map", 'ui::CPicture');
-
-	local list = session.GetMapFogList(session.GetMapName());
-	local cnt = list:Count();
-	for i = 0 , cnt - 1 do
-		local info = list:PtrAt(i);
-
-		if info.revealed == 0 then
-			local name = string.format("_SAMPLE_%d", i);
-			local pic = frame:CreateOrGetControl("picture", name, info.x + px, info.y + py, info.w, info.h);
-			tolua.cast(pic, "ui::CPicture");
-			pic:ShowWindow(1);
-			pic:SetImage("fullred");
-			pic:SetEnableStretch(1);
-			pic:SetAlpha(30.0);
-			pic:EnableHitTest(0);
-
-			if info.selected == 1 then
-				pic:ShowWindow(0);
-			end
-		end
-	end
-
-	frame:Invalidate();
-end
-
-if settings.enableMapViewer then
-	local mapOpenHook = "MAP_OPEN";
-
-	if _G["MAP_OPEN_OLD"] == nil then
-		_G["MAP_OPEN_OLD"] = _G[mapOpenHook];
-		_G[mapOpenHook] = MAP_OPEN_HOOKED;
-	else
-		_G[mapOpenHook] = MAP_OPEN_HOOKED;
-	end
-
-	local mapFogHook = "REVEAL_MAP_PICTURE";
-
-	if _G["REVEAL_MAP_PICTURE_OLD"] == nil then
-		_G["REVEAL_MAP_PICTURE_OLD"] = _G[mapFogHook];
-		_G[mapFogHook] = REVEAL_MAP_PICTURE_HOOKED;
-	else
-		_G[mapFogHook] = REVEAL_MAP_PICTURE_HOOKED;
-	end
-end
-
 INIT();
 
-ui.SysMsg("Excrulon's expviewer and mapviewer loaded! (v1.5)");
+ui.SysMsg("Experience Viewer loaded!");
