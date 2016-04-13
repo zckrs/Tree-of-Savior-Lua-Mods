@@ -1,5 +1,10 @@
 _G["MONSTER_TRACKER"] = {};
 
+_G["MONSTER_TRACKER"]["settings"] = {
+	--if this is enabled, the notice will still show up even if goal is reached.
+	showNoticeIfComplete = true;
+};
+
 function FPS_ON_MSG_HOOKED(frame, msg, argStr, argNum)
 	_G["FPS_ON_MSG_OLD"](frame, msg, argStr, argNum);
 
@@ -8,10 +13,9 @@ function FPS_ON_MSG_HOOKED(frame, msg, argStr, argNum)
 	for k,v in pairs(result) do
 	    local mobName = v[1];
 	    local totalSpawn = v[2];
-
+		
 		local monCls = GetClass("Monster", mobName);
 		local wiki = GetWikiByName(monCls.Journal);
-
 		local killCount = GetWikiIntProp(wiki, "KillCount") + 1;
 		local killsRequired = GetClass('Journal_monkill_reward', monCls.Journal).Count1;
 
@@ -39,8 +43,10 @@ function FPS_ON_MSG_HOOKED(frame, msg, argStr, argNum)
 			killNoticeText:Move(0, 0);
 			killNoticeText:SetOffset(55, 17);
 
-			killNoticeFrame:ShowWindow(1);
-			killNoticeFrame:SetDuration(5.0);
+			if killCount <= killsRequired or (killCount > killsRequired and _G["MONSTER_TRACKER"]["settings"].showNoticeIfComplete) then
+				killNoticeFrame:ShowWindow(1);
+				killNoticeFrame:SetDuration(5.0);
+			end
 		end
 
 		_G["MONSTER_TRACKER"][monCls.ClassID] = killCount;
