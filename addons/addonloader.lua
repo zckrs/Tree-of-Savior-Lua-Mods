@@ -12,6 +12,7 @@ dofile("../addons/mapfogviewer/mapfogviewer.lua");
 dofile("../addons/monsterframes/monsterframes.lua");
 dofile("../addons/monstertracker/monstertracker.lua");
 dofile("../addons/channelsurfer/channelsurfer.lua");
+dofile("../addons/showInvestedStatPoints/showInvestedStatPoints.lua");
 
 --do not touch below here
 local addonLoaderFrame = ui.GetFrame("addonloader");
