@@ -6,7 +6,7 @@ A Tree of Savior native lua experience viewer.
 
 # Download
 
-[Get the latest release here](https://github.com/Excrulon/Tree-of-Savior-Experience-Viewer-Lua-Mod/releases)
+[Get the latest release here](https://github.com/Excrulon/Tree-of-Savior-Lua-Mods/releases)
 
 # Installation
 
