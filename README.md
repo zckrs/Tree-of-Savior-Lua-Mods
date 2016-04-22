@@ -1,6 +1,11 @@
 # Tree of Savior Lua Mods
 
-A Tree of Savior native lua experience viewer.
+### Features
+
+* Experience viewer
+* Map fog viewer
+* Enhanced monster frames
+* Monster kill tracker for journal
 
 ![Tree of Savior Experience Viewer](http://i.imgur.com/z8xXMvA.jpg)
 
