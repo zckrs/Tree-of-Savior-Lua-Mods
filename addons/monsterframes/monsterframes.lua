@@ -192,22 +192,7 @@ function TARGETINFO_ON_MSG_HOOKED(frame, msg, argStr, argNum)
 end
 
 
-local targetInfoHook = "TGTINFO_TARGET_SET";
-
-if _G["TGTINFO_TARGET_SET_OLD"] == nil then
-    _G["TGTINFO_TARGET_SET_OLD"] = _G[targetInfoHook];
-    _G[targetInfoHook] = TGTINFO_TARGET_SET_HOOKED;
-else
-    _G[targetInfoHook] = TGTINFO_TARGET_SET_HOOKED;
-end
-
-local targetInfoOnMsgHooked = "TARGETINFO_ON_MSG";
-
-if _G["TARGETINFO_ON_MSG_OLD"] == nil then
-    _G["TARGETINFO_ON_MSG_OLD"] = _G[targetInfoOnMsgHooked];
-    _G[targetInfoOnMsgHooked] = TARGETINFO_ON_MSG_HOOKED;
-else
-    _G[targetInfoOnMsgHooked] = TARGETINFO_ON_MSG_HOOKED;
-end
+SETUP_HOOK(TGTINFO_TARGET_SET_HOOKED, "TGTINFO_TARGET_SET");
+SETUP_HOOK(TARGETINFO_ON_MSG_HOOKED, "TARGETINFO_ON_MSG");
 
 ui.SysMsg("Monster Frames loaded!");

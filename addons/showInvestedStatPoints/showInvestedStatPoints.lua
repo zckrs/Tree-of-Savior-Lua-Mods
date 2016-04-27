@@ -54,13 +54,6 @@ function ADD_TO_STATUS(gboxctrl, attibuteName, value, y)
     return y + controlSet:GetHeight();
 end
 
-local STATUS_INFOHook = "STATUS_INFO";
-
-if _G["STATUS_INFO_OLD"] == nil then
-    _G["STATUS_INFO_OLD"] = _G[STATUS_INFOHook];
-    _G[STATUS_INFOHook] = STATUS_INFO_HOOKED;
-else
-    _G[STATUS_INFOHook] = STATUS_INFO_HOOKED;
-end
+SETUP_HOOK(STATUS_INFO_HOOKED, "STATUS_INFO");
 
 ui.SysMsg("Show Invested Stat Points loaded!");

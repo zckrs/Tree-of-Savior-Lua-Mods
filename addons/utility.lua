@@ -137,3 +137,13 @@ function IS_VALID_STAT(statStr, includeLuck)
     
     return false;
 end
+
+function SETUP_HOOK(newFunction, hookedFunctionStr)
+	local storeOldFunc = hookedFunctionStr .. "_OLD";
+	if _G[storeOldFunc] == nil then
+		_G[storeOldFunc] = _G[hookedFunctionStr];
+		_G[hookedFunctionStr] = newFunction;
+	else
+		_G[hookedFunctionStr] = newFunction;
+	end
+end
