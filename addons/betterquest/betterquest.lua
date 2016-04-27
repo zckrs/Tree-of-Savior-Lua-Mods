@@ -1,6 +1,6 @@
 local filterEnabled = true;
 
-function INIT(addon, frame)
+function BETTERQUEST_INIT()
 	local frame = ui.GetFrame('quest');
 	local ctrl = frame:CreateOrGetControl('checkbox', 'BETTERQUEST_FILTER', 0, 0, 150, 30);
 	tolua.cast(ctrl, 'ui::CCheckBox');
@@ -151,7 +151,7 @@ function BETTERQUEST_UPDATE_ALLQUEST(frame, msg, isNew, questID, isNewQuest)
 end
 
 
-INIT();
+BETTERQUEST_INIT();
 ui.SysMsg("BetterQuest loaded!");
 
 function questSort(a, b)
