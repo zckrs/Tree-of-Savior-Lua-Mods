@@ -37,22 +37,7 @@ function DRAW_RED_FOG(frame)
 	frame:Invalidate();
 end
 
-local mapOpenHook = "MAP_OPEN";
-
-if _G["MAP_OPEN_OLD"] == nil then
-	_G["MAP_OPEN_OLD"] = _G[mapOpenHook];
-	_G[mapOpenHook] = MAP_OPEN_HOOKED;
-else
-	_G[mapOpenHook] = MAP_OPEN_HOOKED;
-end
-
-local mapFogHook = "REVEAL_MAP_PICTURE";
-
-if _G["REVEAL_MAP_PICTURE_OLD"] == nil then
-	_G["REVEAL_MAP_PICTURE_OLD"] = _G[mapFogHook];
-	_G[mapFogHook] = REVEAL_MAP_PICTURE_HOOKED;
-else
-	_G[mapFogHook] = REVEAL_MAP_PICTURE_HOOKED;
-end
+SETUP_HOOK(MAP_OPEN_HOOKED, "MAP_OPEN");
+SETUP_HOOK(REVEAL_MAP_PICTURE_HOOKED, "REVEAL_MAP_PICTURE");
 
 ui.SysMsg("Map Fog Viewer loaded!");

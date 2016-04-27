@@ -56,22 +56,8 @@ function POPUP_CHANNEL_LIST_HOOKED(parent)
     end
 end
 
-local selectZoneMoveChannelHook = "SELECT_ZONE_MOVE_CHANNEL";
+SETUP_HOOK(SELECT_ZONE_MOVE_CHANNEL_HOOKED, "SELECT_ZONE_MOVE_CHANNEL");
+SETUP_HOOK(POPUP_CHANNEL_LIST_HOOKED, "POPUP_CHANNEL_LIST");
 
-if _G["SELECT_ZONE_MOVE_CHANNEL_OLD"] == nil then
-    _G["SELECT_ZONE_MOVE_CHANNEL_OLD"] = _G[selectZoneMoveChannelHook];
-    _G[selectZoneMoveChannelHook] = SELECT_ZONE_MOVE_CHANNEL_HOOKED;
-else
-    _G[selectZoneMoveChannelHook] = SELECT_ZONE_MOVE_CHANNEL_HOOKED;
-end
-
-local popupChannelListHook = "POPUP_CHANNEL_LIST";
-
-if _G["POPUP_CHANNEL_LIST_OLD"] == nil then
-    _G["POPUP_CHANNEL_LIST_OLD"] = _G[popupChannelListHook];
-    _G[popupChannelListHook] = POPUP_CHANNEL_LIST_HOOKED;
-else
-    _G[popupChannelListHook] = POPUP_CHANNEL_LIST_HOOKED;
-end
 
 ui.SysMsg("Channel Surfer loaded!");
