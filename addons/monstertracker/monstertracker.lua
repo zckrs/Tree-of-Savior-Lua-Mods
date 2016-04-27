@@ -101,13 +101,6 @@ function SHOULD_SHOW_NOTICE(monsterTrackData)
 		or (monsterTrackData.killCount > monsterTrackData.killsRequired and _G["MONSTER_TRACKER"]["settings"].showNoticeIfComplete);
 end
 
-local FPS_ON_MSGHook = "FPS_ON_MSG";
-
-if _G["FPS_ON_MSG_OLD"] == nil then
-	_G["FPS_ON_MSG_OLD"] = _G[FPS_ON_MSGHook];
-	_G[FPS_ON_MSGHook] = FPS_ON_MSG_HOOKED;
-else
-	_G[FPS_ON_MSGHook] = FPS_ON_MSG_HOOKED;
-end
+SETUP_HOOK(FPS_ON_MSG_HOOKED, "FPS_ON_MSG");
 
 ui.SysMsg("Monster Tracker loaded!");
