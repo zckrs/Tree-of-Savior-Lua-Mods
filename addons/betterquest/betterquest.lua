@@ -1,6 +1,6 @@
 local filterEnabled = true;
 
-function INIT(addon, frame)
+function BETTERQUEST_INIT()
 	local frame = ui.GetFrame('quest');
 	local ctrl = frame:CreateOrGetControl('checkbox', 'BETTERQUEST_FILTER', 0, 0, 150, 30);
 	tolua.cast(ctrl, 'ui::CCheckBox');
@@ -12,10 +12,9 @@ function INIT(addon, frame)
 	ctrl:SetEventScript(ui.LBUTTONUP, 'BETTERQUEST_TOGGLE_FILTER');
 	ctrl:SetCheck(filterEnabled == true and 0 or 1);
 
-	_G['OLD_POSSIBLE_UI_OPEN_CHECK'] = _G['SCR_POSSIBLE_UI_OPEN_CHECK'];
-	_G['SCR_POSSIBLE_UI_OPEN_CHECK'] = BETTERQUEST_POSSIBLE_UI_OPEN_CHECK;
-	_G['OLD_UPDATE_ALLQUEST'] = _G['UPDATE_ALLQUEST'];
-	_G['UPDATE_ALLQUEST'] = BETTERQUEST_UPDATE_ALLQUEST;
+	SETUP_HOOK(BETTERQUEST_POSSIBLE_UI_OPEN_CHECK, "SCR_POSSIBLE_UI_OPEN_CHECK");
+	SETUP_HOOK(BETTERQUEST_UPDATE_ALLQUEST, "UPDATE_ALLQUEST");
+	
 end
 
 local refreshQuestFrame = function()
@@ -151,7 +150,7 @@ function BETTERQUEST_UPDATE_ALLQUEST(frame, msg, isNew, questID, isNewQuest)
 end
 
 
-INIT();
+BETTERQUEST_INIT();
 ui.SysMsg("BetterQuest loaded!");
 
 function questSort(a, b)
