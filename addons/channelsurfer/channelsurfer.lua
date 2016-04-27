@@ -56,8 +56,50 @@ function POPUP_CHANNEL_LIST_HOOKED(parent)
     end
 end
 
+function CHSURF_CHANGE_CHANNEL(nextchannel)
+	local mapName = session.GetMapName()
+	local mapCls = GetClass("Map", mapName);
+	local zoneInsts = session.serverState.GetMap(mapCls.ClassID);
+	local numberOfChannels = zoneInsts:GetZoneInstCount();
+	local currentChannel = session.loginInfo.GetChannel();
+	if nextchannel == 1 then
+		if currentChannel+1 == numberOfChannels then
+			SELECT_ZONE_MOVE_CHANNEL_HOOKED(0, 0)
+		else
+			SELECT_ZONE_MOVE_CHANNEL_HOOKED(0, currentChannel+1)
+		end
+	else
+		if currentChannel-1 == -1 then
+			SELECT_ZONE_MOVE_CHANNEL_HOOKED(0, numberOfChannels-1)
+		else
+			SELECT_ZONE_MOVE_CHANNEL_HOOKED(0, currentChannel-1)
+		end
+	end
+end
+
+function CHSURF_CREATE_BUTTONS()
+	local frame = ui.GetFrame("minimap");
+	local btnsize = 30;
+	local nextbutton = frame:CreateOrGetControl('button', "nextbutton", 5+34, 5, btnsize, btnsize);
+	tolua.cast(nextbutton, "ui::CButton");
+	nextbutton:SetText("{s22}>");
+	nextbutton:SetEventScript(ui.LBUTTONUP, "CHSURF_CHANGE_CHANNEL(1)");
+	
+	local prevbutton = frame:CreateOrGetControl('button', "prevbutton", 5, 5, btnsize, btnsize);
+	tolua.cast(prevbutton, "ui::CButton");
+	prevbutton:SetText("{s22}<");
+	prevbutton:SetEventScript(ui.LBUTTONUP, "CHSURF_CHANGE_CHANNEL(0)");
+end
+
+function MINIMAP_ON_INIT_HOOKED(addon, frame)
+	_G["MINIMAP_ON_INIT_OLD"](addon, frame);
+	CHSURF_CREATE_BUTTONS();
+end
+
+
+SETUP_HOOK(MINIMAP_ON_INIT_HOOKED, "MINIMAP_ON_INIT");
 SETUP_HOOK(SELECT_ZONE_MOVE_CHANNEL_HOOKED, "SELECT_ZONE_MOVE_CHANNEL");
 SETUP_HOOK(POPUP_CHANNEL_LIST_HOOKED, "POPUP_CHANNEL_LIST");
 
-
+CHSURF_CREATE_BUTTONS();
 ui.SysMsg("Channel Surfer loaded!");
