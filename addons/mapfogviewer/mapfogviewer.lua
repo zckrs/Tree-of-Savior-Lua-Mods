@@ -13,6 +13,11 @@ function MINIMAP_CHAR_UDT_HOOKED(frame, msg, argStr, argNum)
 	DRAW_RED_FOG(frame);
 end
 
+function UPDATE_MINIMAP_HOOKED(frame, isFirst)
+	_G["UPDATE_MINIMAP_OLD"](frame, isFirst);
+	DRAW_RED_FOG(frame);
+end
+
 function DRAW_RED_FOG(frame)
 	HIDE_CHILD_BYNAME(frame, "_SAMPLE_");
 	local offsetX, offsetY = GET_MAPFOG_PIC_OFFSET(frame);
@@ -50,5 +55,6 @@ end
 SETUP_HOOK(MAP_OPEN_HOOKED, "MAP_OPEN");
 SETUP_HOOK(REVEAL_MAP_PICTURE_HOOKED, "REVEAL_MAP_PICTURE");
 SETUP_HOOK(MINIMAP_CHAR_UDT_HOOKED, "MINIMAP_CHAR_UDT");
+SETUP_HOOK(UPDATE_MINIMAP_HOOKED, "UPDATE_MINIMAP");
 
 ui.SysMsg("Map Fog Viewer loaded!");
