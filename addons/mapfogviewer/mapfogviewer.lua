@@ -15,17 +15,22 @@ end
 
 function DRAW_RED_FOG(frame)
 	HIDE_CHILD_BYNAME(frame, "_SAMPLE_");
-	local px, py = GET_MAPFOG_PIC_OFFSET(frame);
+	local offsetX, offsetY = GET_MAPFOG_PIC_OFFSET(frame);
 	local mapPic = GET_CHILD(frame, "map", 'ui::CPicture');
+	local mapZoom = math.abs((GET_MINIMAPSIZE() + 100) / 100);
 
 	local list = session.GetMapFogList(session.GetMapName());
 	local cnt = list:Count();
 	for i = 0 , cnt - 1 do
-		local info = list:PtrAt(i);
+		local tile = list:PtrAt(i);
 
-		if info.revealed == 0 then
+		if tile.revealed == 0 then
 			local name = string.format("_SAMPLE_%d", i);
-			local pic = frame:CreateOrGetControl("picture", name, info.x + px, info.y + py, info.w, info.h);
+			local tilePosX = (tile.x * mapZoom) + offsetX;
+			local tilePosY = (tile.y * mapZoom) + offsetY;
+			local tileWidth = math.ceil(tile.w * mapZoom);
+			local tileHeight = math.ceil(tile.h * mapZoom);
+			local pic = frame:CreateOrGetControl("picture", name, tilePosX, tilePosY, tileWidth, tileHeight);
 			tolua.cast(pic, "ui::CPicture");
 			pic:ShowWindow(1);
 			pic:SetImage("fullred");
@@ -33,7 +38,7 @@ function DRAW_RED_FOG(frame)
 			pic:SetAlpha(30.0);
 			pic:EnableHitTest(0);
 
-			if info.selected == 1 then
+			if tile.selected == 1 then
 				pic:ShowWindow(0);
 			end
 		end
