@@ -12,6 +12,7 @@ dofile("../addons/mapfogviewer/mapfogviewer.lua");
 dofile("../addons/monsterframes/monsterframes.lua");
 dofile("../addons/monstertracker/monstertracker.lua");
 dofile("../addons/channelsurfer/channelsurfer.lua");
+dofile("../addons/guildmates/guildmates.lua");
 dofile("../addons/showInvestedStatPoints/showInvestedStatPoints.lua");
 dofile("../addons/betterquest/betterquest.lua");
 dofile("../addons/hidemaxedattributes/hidemaxedattributes.lua");
@@ -33,4 +34,4 @@ end
 
 SETUP_HOOK(MAP_ON_INIT_HOOKED, "MAP_ON_INIT");
 
-ui.SysMsg("Excrulon's addons loaded! (v1.6)");
+ui.SysMsg("Excrulon's addons loaded! (v1.8)");
