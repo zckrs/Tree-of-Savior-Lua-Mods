@@ -6,6 +6,7 @@
 * Map fog viewer
 * Enhanced monster frames
 * Monster kill tracker for journal
+* Guildmates - Displays character level and character name in a tooltip. Adds party request and friend request to the context menu.
 
 ![Tree of Savior Experience Viewer](http://i.imgur.com/z8xXMvA.jpg)
 
