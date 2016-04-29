@@ -14,6 +14,7 @@ dofile("../addons/monstertracker/monstertracker.lua");
 dofile("../addons/channelsurfer/channelsurfer.lua");
 dofile("../addons/showInvestedStatPoints/showInvestedStatPoints.lua");
 dofile("../addons/betterquest/betterquest.lua");
+dofile("../addons/hidemaxedattributes/hidemaxedattributes.lua");
 
 --do not touch below here
 local addonLoaderFrame = ui.GetFrame("addonloader");
