@@ -24,6 +24,10 @@ function DRAW_RED_FOG(frame)
 	local mapPic = GET_CHILD(frame, "map", 'ui::CPicture');
 	local mapZoom = math.abs((GET_MINIMAPSIZE() + 100) / 100);
 
+    if frame == ui.GetFrame("map") then
+        mapZoom = 1;
+    end
+
 	local list = session.GetMapFogList(session.GetMapName());
 	local cnt = list:Count();
 	for i = 0 , cnt - 1 do
