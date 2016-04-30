@@ -12,22 +12,22 @@ function SHOW_PROPERTY_WINDOW(frame, monCls, targetInfoProperty, monsterProperty
 end
 
 function TGTINFO_TARGET_SET_HOOKED(frame, msg, argStr, argNum)
-	_G["TGTINFO_TARGET_SET_OLD"](frame, msg, argStr, argNum);
+    _G["TGTINFO_TARGET_SET_OLD"](frame, msg, argStr, argNum);
 
-	local targetinfo = info.GetTargetInfo(session.GetTargetHandle());
+    local targetinfo = info.GetTargetInfo(session.GetTargetHandle());
 
-	if argStr == "None" then
-		return;
-	end
+    if argStr == "None" then
+        return;
+    end
 
-	local stat = info.GetStat(session.GetTargetHandle());
-	if stat == nil then
-		return;
-	end
+    local stat = info.GetStat(session.GetTargetHandle());
+    if stat == nil then
+        return;
+    end
 
-	if targetinfo == nil then
-		return;
-	end
+    if nil == targetinfo then
+        return;
+    end
 
 	local monactor = world.GetActor(session.GetTargetHandle());
 	local montype = monactor:GetType();
@@ -37,6 +37,22 @@ function TGTINFO_TARGET_SET_HOOKED(frame, msg, argStr, argNum)
 		return;
 	end
 
+    -- hp
+    local numhp = nil;
+    if targetinfo.isElite == 1 then
+        numhp = frame:CreateOrGetControl("richtext", "numhp", 3, -5, 176, 115);
+    else
+        numhp = frame:CreateOrGetControl("richtext", "numhp", -17, 0, 176, 115);
+    end
+    if numhp ~= nil then
+        tolua.cast(numhp, "ui::CRichText");
+        numhp:ShowWindow(1);
+        numhp:SetGravity(ui.CENTER_HORZ, ui.TOP);
+        numhp:SetTextAlign("center", "center");
+        numhp:SetText(ADD_THOUSANDS_SEPARATOR(stat.HP) .. "/" .. ADD_THOUSANDS_SEPARATOR(stat.maxHP));
+        numhp:SetFontName("white_16_ol");
+    end
+
 	local xPosition = 100;
 	local yPosition = 17;
 	local propertyWidth = 35;
@@ -45,23 +61,7 @@ function TGTINFO_TARGET_SET_HOOKED(frame, msg, argStr, argNum)
 		xPosition = 117;
 		yPosition = 12;
 	end
-
-	-- hp
-	local numhp = nil;
-	if targetinfo.isElite == 1 then
-		numhp = frame:CreateOrGetControl("richtext", "numhp", 3, -5, 176, 115);
-	else
-		numhp = frame:CreateOrGetControl("richtext", "numhp", -17, 0, 176, 115);
-	end
-	if numhp ~= nil then
-		tolua.cast(numhp, "ui::CRichText");
-		numhp:ShowWindow(1);
-		numhp:SetGravity(ui.CENTER_HORZ, ui.TOP);
-		numhp:SetTextAlign("center", "center");
-		numhp:SetText(ADD_THOUSANDS_SEPARATOR(stat.HP) .. "/" .. ADD_THOUSANDS_SEPARATOR(stat.maxHP));
-		numhp:SetFontName("white_16_ol");
-	end
-
+	
 	SHOW_PROPERTY_WINDOW(frame, monCls, targetinfo.raceType, "RaceType", xPosition + (0 * propertyWidth), yPosition, 10, 10);
 	SHOW_PROPERTY_WINDOW(frame, monCls, targetinfo.attribute, "Attribute", xPosition + (1 * propertyWidth), yPosition, 10, 10);
 	SHOW_PROPERTY_WINDOW(frame, monCls, targetinfo.armorType, "ArmorMaterial", xPosition + (2 * propertyWidth), yPosition, 10, 10);
@@ -98,27 +98,27 @@ function TGTINFO_TARGET_SET_HOOKED(frame, msg, argStr, argNum)
 end
 
 function TARGETINFO_ON_MSG_HOOKED(frame, msg, argStr, argNum)
-	local oldf = _G["TARGETINFO_ON_MSG_OLD"];
-	oldf(frame, msg, str, exp, tableinfo);
+    local oldf = _G["TARGETINFO_ON_MSG_OLD"];
+    oldf(frame, msg, str, exp, tableinfo);
 
-	if frame == nil then
-		return;
-	end
+    if frame == nil then
+        return;
+    end
 
-	if msg == 'TARGET_UPDATE' then
-		local stat = info.GetStat(session.GetTargetHandle());
-		if stat == nil then
-			return;
-		end
+    if msg == 'TARGET_UPDATE' then
+        local stat = info.GetStat(session.GetTargetHandle());
+        if stat == nil then
+            return;
+        end
 
-		local numhp = frame:CreateOrGetControl("richtext", "numhp", -17, 0, 176, 115);
-		tolua.cast(numhp, "ui::CRichText");
-		numhp:ShowWindow(1);
-		numhp:SetGravity(ui.CENTER_HORZ, ui.TOP);
-		numhp:SetTextAlign("center", "center");
-		numhp:SetText(ADD_THOUSANDS_SEPARATOR(stat.HP) .. "/" .. ADD_THOUSANDS_SEPARATOR(stat.maxHP));
-		numhp:SetFontName("white_16_ol");
-	end
+        local numhp = frame:CreateOrGetControl("richtext", "numhp", -17, 0, 176, 115);
+        tolua.cast(numhp, "ui::CRichText");
+        numhp:ShowWindow(1);
+        numhp:SetGravity(ui.CENTER_HORZ, ui.TOP);
+        numhp:SetTextAlign("center", "center");
+        numhp:SetText(ADD_THOUSANDS_SEPARATOR(stat.HP) .. "/" .. ADD_THOUSANDS_SEPARATOR(stat.maxHP));
+        numhp:SetFontName("white_16_ol");
+    end
 end
 
 function TARGETINFOTOBOSS_TARGET_SET_HOOKED(frame, msg, argStr, argNum)
@@ -135,7 +135,7 @@ function TARGETINFOTOBOSS_TARGET_SET_HOOKED(frame, msg, argStr, argNum)
 	end
 
 	local targetinfo = info.GetTargetInfo(argNum);
-	if targetinfo == nil then
+	if nil == targetinfo then
 		return;
 	end
 
