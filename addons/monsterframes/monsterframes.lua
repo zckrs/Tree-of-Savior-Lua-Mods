@@ -38,22 +38,45 @@ function TGTINFO_TARGET_SET_HOOKED(frame, msg, argStr, argNum)
 	end
 
     -- hp
-    local numhp = frame:CreateOrGetControl("richtext", "numhp", -17, 0, 176, 115);
-    tolua.cast(numhp, "ui::CRichText");
-    numhp:ShowWindow(1);
-    numhp:SetGravity(ui.CENTER_HORZ, ui.TOP);
-    numhp:SetTextAlign("center", "center");
-    numhp:SetText(ADD_THOUSANDS_SEPARATOR(stat.HP) .. "/" .. ADD_THOUSANDS_SEPARATOR(stat.maxHP));
-    numhp:SetFontName("white_16_ol");
+    local numhp = nil;
+    if targetinfo.isElite == 1 then
+        numhp = frame:CreateOrGetControl("richtext", "numhp", 3, -5, 176, 115);
+    else
+        numhp = frame:CreateOrGetControl("richtext", "numhp", -17, 0, 176, 115);
+    end
+    if numhp ~= nil then
+        tolua.cast(numhp, "ui::CRichText");
+        numhp:ShowWindow(1);
+        numhp:SetGravity(ui.CENTER_HORZ, ui.TOP);
+        numhp:SetTextAlign("center", "center");
+        numhp:SetText(ADD_THOUSANDS_SEPARATOR(stat.HP) .. "/" .. ADD_THOUSANDS_SEPARATOR(stat.maxHP));
+        numhp:SetFontName("white_16_ol");
+    end
 
-	local startX = 100;
-	local offsetX = 50;
+	local xPosition = 100;
+	local yPosition = 17;
+	local propertyWidth = 35;
 
-	SHOW_PROPERTY_WINDOW(frame, monCls, targetinfo.raceType, "RaceType", 100, 17, 10, 10);
-	SHOW_PROPERTY_WINDOW(frame, monCls, targetinfo.attribute, "Attribute", 135, 17, 10, 10);
-	SHOW_PROPERTY_WINDOW(frame, monCls, targetinfo.armorType, "ArmorMaterial", 170, 17, 10, 10);
-	SHOW_PROPERTY_WINDOW(frame, monCls, monCls["MoveType"], "MoveType", 205, 17, 10, 10);
-	SHOW_PROPERTY_WINDOW(frame, monCls, nil, "EffectiveAtkType", 240, 17, 10, 10);
+	if targetinfo.isElite == 1 then
+		xPosition = 117;
+		yPosition = 12;
+	end
+	
+	SHOW_PROPERTY_WINDOW(frame, monCls, targetinfo.raceType, "RaceType", xPosition + (0 * propertyWidth), yPosition, 10, 10);
+	SHOW_PROPERTY_WINDOW(frame, monCls, targetinfo.attribute, "Attribute", xPosition + (1 * propertyWidth), yPosition, 10, 10);
+	SHOW_PROPERTY_WINDOW(frame, monCls, targetinfo.armorType, "ArmorMaterial", xPosition + (2 * propertyWidth), yPosition, 10, 10);
+	SHOW_PROPERTY_WINDOW(frame, monCls, monCls["MoveType"], "MoveType", xPosition + (3 * propertyWidth), yPosition, 10, 10);
+	SHOW_PROPERTY_WINDOW(frame, monCls, nil, "EffectiveAtkType", xPosition + (4 * propertyWidth), yPosition, 10, 10);
+
+	local targetSizeText = frame:CreateOrGetControl("richtext", "targetSizeText", 0, 0, 100, 40);
+	tolua.cast(targetSizeText, "ui::CRichText");
+	if targetinfo.size ~= nil then
+		targetSizeText:SetOffset(xPosition + (5 * propertyWidth) + 10, yPosition - 8);
+		targetSizeText:SetText("{@st41}{s28}" .. targetinfo.size);
+		targetSizeText:ShowWindow(1);
+	else
+		targetSizeText:ShowWindow(0);
+	end
 
 	local wiki = GetWikiByName(monCls.Journal);
 
@@ -87,8 +110,6 @@ function TARGETINFO_ON_MSG_HOOKED(frame, msg, argStr, argNum)
         if stat == nil then
             return;
         end
-
-        local targetinfo = info.GetTargetInfo(session.GetTargetHandle());
 
         local numhp = frame:CreateOrGetControl("richtext", "numhp", -17, 0, 176, 115);
         tolua.cast(numhp, "ui::CRichText");
