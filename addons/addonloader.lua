@@ -7,15 +7,15 @@ line.
 dofile("../addons/utility.lua"); --do not remove this one as it's a dependency for others.
 
 --[[ADDONS]]
+dofile("../addons/betterquest/betterquest.lua");
+dofile("../addons/channelsurfer/channelsurfer.lua");
 dofile("../addons/expviewer/expviewer.lua");
+dofile("../addons/guildmates/guildmates.lua");
+dofile("../addons/hidemaxedattributes/hidemaxedattributes.lua");
 dofile("../addons/mapfogviewer/mapfogviewer.lua");
 dofile("../addons/monsterframes/monsterframes.lua");
 dofile("../addons/monstertracker/monstertracker.lua");
-dofile("../addons/channelsurfer/channelsurfer.lua");
-dofile("../addons/guildmates/guildmates.lua");
-dofile("../addons/showInvestedStatPoints/showInvestedStatPoints.lua");
-dofile("../addons/betterquest/betterquest.lua");
-dofile("../addons/hidemaxedattributes/hidemaxedattributes.lua");
+dofile("../addons/showinvestedstatpoints/showinvestedstatpoints.lua");
 
 --do not touch below here
 local addonLoaderFrame = ui.GetFrame("addonloader");
