@@ -31,14 +31,29 @@ function CHAT_RBTN_POPUP_HOOKED(frame, chatCtrl)
 	ui.AddContextMenuItem(context, "Whisper", string.format("ui.WhisperTo('%s')", targetName));
 	ui.AddContextMenuItem(context, "Friend Request", string.format("friends.RequestRegister('%s')", targetName));
 	ui.AddContextMenuItem(context, "Party Request", string.format("PARTY_INVITE('%s')", targetName));
-	ui.AddContextMenuItem(context, "Block & Report", string.format("BLOCK_AND_REPORT('%s')", targetName));
-	ui.AddContextMenuItem(context, "Report", string.format("REPORT_AUTOBOT_MSGBOX('%s')", targetName));
+	ui.AddContextMenuItem(context, "Character Info", string.format("OPEN_PARTY_MEMBER_INFO('%s')", targetName));
+	ui.AddContextMenuItem(context, "Report Bot & Block", string.format("BLOCK_AND_REPORT('%s')", targetName));
+	ui.AddContextMenuItem(context, "Report Bot", string.format("REPORT_AUTOBOT_MSGBOX('%s')", targetName));
 	ui.AddContextMenuItem(context, "Block", string.format("CHAT_BLOCK_MSG('%s')", targetName));
 
 	ui.AddContextMenuItem(context, "Cancel", "None");
 	ui.OpenContextMenu(context);
 
 end
+
+function OPEN_PARTY_MEMBER_INFO_HOOKED(targetName)
+	pcCompareFirstPass = true;
+	party.ReqMemberDetailInfo(targetName);
+end
+
+function REQUEST_LIKE_STATE_HOOKED(familyName)
+	if pcCompareFirstPass == true then
+		pcCompareFirstPass = false;
+		return;
+	end
+	_G['REQUEST_LIKE_STATE_OLD'](familyName);
+end
+
 
 function SHOW_PC_CONTEXT_MENU_HOOKED(handle)
 
@@ -79,10 +94,9 @@ function SHOW_PC_CONTEXT_MENU_HOOKED(handle)
 		end
 
 		ui.AddContextMenuItem(context, "Friendly Duel Request", string.format("REQUEST_FIGHT(%d)", pcObj:GetHandleVal()));
-		ui.AddContextMenuItem(context, "Block & Report", string.format("BLOCK_AND_REPORT('%s')", targetName));
-		ui.AddContextMenuItem(context, "Report", string.format("REPORT_AUTOBOT_MSGBOX('%s')", targetName));
+		ui.AddContextMenuItem(context, "Report Bot & Block", string.format("BLOCK_AND_REPORT('%s')", targetName));
+		ui.AddContextMenuItem(context, "Report Bot", string.format("REPORT_AUTOBOT_MSGBOX('%s')", targetName));
 		ui.AddContextMenuItem(context, "Block", string.format("CHAT_BLOCK_MSG('%s')", targetName));
-
 		if session.world.IsIntegrateServer() == false then
 			if session.likeit.AmILikeYou(targetName) == true then
 				ui.AddContextMenuItem(context, "Cancel Like", string.format("SEND_PC_INFO(%d)", handle));
@@ -100,7 +114,10 @@ function SHOW_PC_CONTEXT_MENU_HOOKED(handle)
 
 end
 
-SETUP_HOOK(CHAT_RBTN_POPUP_HOOKED, "CHAT_RBTN_POPUP");
+
 SETUP_HOOK(SHOW_PC_CONTEXT_MENU_HOOKED, "SHOW_PC_CONTEXT_MENU");
+SETUP_HOOK(CHAT_RBTN_POPUP_HOOKED, "CHAT_RBTN_POPUP");
+SETUP_HOOK(OPEN_PARTY_MEMBER_INFO_HOOKED, "OPEN_PARTY_MEMBER_INFO");
+SETUP_HOOK(REQUEST_LIKE_STATE_HOOKED, "REQUEST_LIKE_STATE");
 
 ui.SysMsg("Block and Report loaded!");
