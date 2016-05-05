@@ -1,4 +1,4 @@
-settings = {
+local settings = {
 	showCurrentRequiredExperience = true;
 	showCurrentPercent = true;
 	showLastGainedExperience = true;

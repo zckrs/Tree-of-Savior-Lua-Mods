@@ -1,3 +1,12 @@
+local settings = {
+	showRaceType = true;
+	showAttribute = true;
+	showArmorMaterial = true;
+	showMoveType = true;
+	showEffectiveAtkType = true;
+	showTargetSize = true;
+};
+
 function SHOW_PROPERTY_WINDOW(frame, monCls, targetInfoProperty, monsterPropertyIcon, x, y, spacingX, spacingY)
 	local propertyType = frame:CreateOrGetControl("picture", monsterPropertyIcon .. "_icon", 0, 0, 100, 40);
 	tolua.cast(propertyType, "ui::CPicture");
@@ -62,20 +71,40 @@ function TGTINFO_TARGET_SET_HOOKED(frame, msg, argStr, argNum)
 		yPosition = 12;
 	end
 
-	SHOW_PROPERTY_WINDOW(frame, monCls, targetinfo.raceType, "RaceType", xPosition + (0 * propertyWidth), yPosition, 10, 10);
-	SHOW_PROPERTY_WINDOW(frame, monCls, targetinfo.attribute, "Attribute", xPosition + (1 * propertyWidth), yPosition, 10, 10);
-	SHOW_PROPERTY_WINDOW(frame, monCls, targetinfo.armorType, "ArmorMaterial", xPosition + (2 * propertyWidth), yPosition, 10, 10);
-	SHOW_PROPERTY_WINDOW(frame, monCls, monCls["MoveType"], "MoveType", xPosition + (3 * propertyWidth), yPosition, 10, 10);
-	SHOW_PROPERTY_WINDOW(frame, monCls, nil, "EffectiveAtkType", xPosition + (4 * propertyWidth), yPosition, 10, 10);
+	local positionIndex = 0;
+	
+	if settings.showRaceType then
+		SHOW_PROPERTY_WINDOW(frame, monCls, targetinfo.raceType, "RaceType", xPosition + (positionIndex * propertyWidth), yPosition, 10, 10);
+		positionIndex = positionIndex + 1;
+	end
+	if settings.showAttribute then
+		SHOW_PROPERTY_WINDOW(frame, monCls, targetinfo.attribute, "Attribute", xPosition + (positionIndex * propertyWidth), yPosition, 10, 10);
+		positionIndex = positionIndex + 1;
+	end
+	if settings.showArmorMaterial then
+		SHOW_PROPERTY_WINDOW(frame, monCls, targetinfo.armorType, "ArmorMaterial", xPosition + (positionIndex * propertyWidth), yPosition, 10, 10);
+		positionIndex = positionIndex + 1;
+	end
+	if settings.showMoveType then
+		SHOW_PROPERTY_WINDOW(frame, monCls, monCls["MoveType"], "MoveType", xPosition + (positionIndex * propertyWidth), yPosition, 10, 10);
+		positionIndex = positionIndex + 1;
+	end
+	if settings.showEffectiveAtkType then
+		SHOW_PROPERTY_WINDOW(frame, monCls, nil, "EffectiveAtkType", xPosition + (positionIndex * propertyWidth), yPosition, 10, 10);
+		positionIndex = positionIndex + 1;
+	end
 
-	local targetSizeText = frame:CreateOrGetControl("richtext", "targetSizeText", 0, 0, 100, 40);
-	tolua.cast(targetSizeText, "ui::CRichText");
-	if targetinfo.size ~= nil then
-		targetSizeText:SetOffset(xPosition + (5 * propertyWidth) + 10, yPosition - 8);
-		targetSizeText:SetText("{@st41}{s28}" .. targetinfo.size);
-		targetSizeText:ShowWindow(1);
-	else
-		targetSizeText:ShowWindow(0);
+	if settings.showTargetSize then
+		local targetSizeText = frame:CreateOrGetControl("richtext", "targetSizeText", 0, 0, 100, 40);
+		tolua.cast(targetSizeText, "ui::CRichText");
+		if targetinfo.size ~= nil then
+			targetSizeText:SetOffset(xPosition + (positionIndex * propertyWidth) + 10, yPosition - 8);
+			targetSizeText:SetText("{@st41}{s28}" .. targetinfo.size);
+			targetSizeText:ShowWindow(1);
+			positionIndex = positionIndex + 1;
+		else
+			targetSizeText:ShowWindow(0);
+		end
 	end
 
 	local wiki = GetWikiByName(monCls.Journal);
