@@ -13,7 +13,6 @@ dofile("../addons/channelsurfer/channelsurfer.lua");
 dofile("../addons/expviewer/expviewer.lua");
 dofile("../addons/guildmates/guildmates.lua");
 dofile("../addons/hidemaxedattributes/hidemaxedattributes.lua");
-dofile("../addons/journalexport/journalexport.lua");
 dofile("../addons/mapfogviewer/mapfogviewer.lua");
 dofile("../addons/monsterframes/monsterframes.lua");
 dofile("../addons/monstertracker/monstertracker.lua");
