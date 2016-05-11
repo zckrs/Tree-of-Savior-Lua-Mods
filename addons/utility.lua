@@ -138,6 +138,27 @@ function IS_VALID_STAT(statStr, includeLuck)
     return false;
 end
 
+function TEXT_CONTROL_FACTORY(attributeName, isMainSection)
+    local text = "";
+    
+    if attributeName == "MNA" then
+        attributeName = "SPR"
+    elseif attributeName == "MountDEF" then
+        attributeName = "physical defense"
+    elseif attributeName == "MountDR" then
+        attributeName = "evasion"
+    elseif attributeName == "MountMHP" then
+        attributeName = "max HP"
+    end
+    
+    if isMainSection then
+        text = "Points invested in " .. attributeName;
+    else
+        text = "Mounted " .. attributeName .. " bonus";
+    end
+    return text;
+end
+
 function SETUP_HOOK(newFunction, hookedFunctionStr)
 	local storeOldFunc = hookedFunctionStr .. "_OLD";
 	if _G[storeOldFunc] == nil then

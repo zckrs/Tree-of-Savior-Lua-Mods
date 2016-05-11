@@ -6,6 +6,8 @@ function STATUS_INFO_HOOKED(frame)
     
     local pc = GetMyPCObject();
     
+    local isStatusSection = true;
+    
     local stats = {};
     stats["statPC"] = {};           -- this is how many points you've allocated to it
 
@@ -25,7 +27,29 @@ function STATUS_INFO_HOOKED(frame)
         stats["statPC"][statStr] = GET_STAT_PROPERTY_FROM_PC("STAT", statStr, pc);
         
         -- display the points we have allocated on the end of the list
-        y = ADD_TO_STATUS(Status_internal_gboxctrl, statStr, stats["statPC"][statStr], y);
+        y = ADD_TO_STATUS(Status_internal_gboxctrl, statStr, stats["statPC"][statStr], y, isStatusSection);
+    end
+    
+     --Companion-related stats    
+    local sharedStats = {"MountDEF", "MountDR", "MountMHP"};
+    local petInfo = session.pet.GetSummonedPet();
+    local companion = control.GetMyCompanionActor();
+    local ridingAttributeCheck = GetAbility(pc, "CompanionRide");
+    
+    isStatusSection = false;
+    
+    if ridingAttributeCheck ~= nil then
+      if companion ~= nil then
+          if petInfo ~= nil then 
+              local obj = GetIES(petInfo:GetObject());
+              --Use 3 elements for now as shared PATK, MATK (and possibly MSPD - this one always
+              --returns 0) rely on pet equipment
+              for j = 1 , #sharedStats do
+                  local sharedStatValue = sharedStats[j];
+                  y = ADD_TO_STATUS(Status_internal_gboxctrl, sharedStatValue, obj[sharedStatValue], y, isStatusSection);
+              end
+          end 
+      end 
     end
     
     Status_internal_gboxctrl:SetScrollPos(0);
@@ -33,17 +57,15 @@ function STATUS_INFO_HOOKED(frame)
     
 end
 
-function ADD_TO_STATUS(gboxctrl, attibuteName, value, y)
-    local controlSet = gboxctrl:CreateOrGetControlSet('status_stat', attibuteName, 0, y);
+function ADD_TO_STATUS(gboxctrl, attributeName, value, y, isMainSection)
+    local controlSet = gboxctrl:CreateOrGetControlSet('status_stat', attributeName, 0, y);
     
     tolua.cast(controlSet, "ui::CControlSet");
     local title = GET_CHILD(controlSet, "title", "ui::CRichText");
-    if attibuteName == "MNA" then
-        title:SetText("Points invested in SPR");
-    else
-        title:SetText("Points invested in "..attibuteName);
-    end
-
+    local text = TEXT_CONTROL_FACTORY(attributeName, isMainSection); 
+    
+    title:SetText(text);  
+    
     local stat = GET_CHILD(controlSet, "stat", "ui::CRichText");
     title:SetUseOrifaceRect(true);
     stat:SetUseOrifaceRect(true);
