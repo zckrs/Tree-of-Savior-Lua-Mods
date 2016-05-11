@@ -127,9 +127,8 @@ function TGTINFO_TARGET_SET_HOOKED(frame, msg, argStr, argNum)
 end
 
 function TARGETINFO_ON_MSG_HOOKED(frame, msg, argStr, argNum)
-	local oldf = _G["TARGETINFO_ON_MSG_OLD"];
-	oldf(frame, msg, str, exp, tableinfo);
-
+  _G["TARGETINFO_ON_MSG_OLD"](frame, msg, argStr, argNum);
+  
 	if frame == nil then
 		return;
 	end
@@ -139,8 +138,10 @@ function TARGETINFO_ON_MSG_HOOKED(frame, msg, argStr, argNum)
 		if stat == nil then
 			return;
 		end
-
-		local numhp = nil;
+		
+    local numhp = nil;
+    local targetinfo = info.GetTargetInfo(session.GetTargetHandle());
+    
 		if targetinfo.isElite == 1 then
 			numhp = frame:CreateOrGetControl("richtext", "numhp", 3, -5, 176, 115);
 		else
