@@ -189,6 +189,35 @@ local function init()
 	calculateClassRankAndLevel();
 end
 
-init();
+function SYSMENU_CHECK_HIDE_VAR_ICONS_HOOKED(frame)
+	if false == VARICON_VISIBLE_STATE_CHANTED(frame, "necronomicon", "necronomicon")
+	and false == VARICON_VISIBLE_STATE_CHANTED(frame, "grimoire", "grimoire")
+	and false == VARICON_VISIBLE_STATE_CHANTED(frame, "guild", "guild")
+	and false == VARICON_VISIBLE_STATE_CHANTED(frame, "poisonpot", "poisonpot")
+	then
+		return;
+	end
 
-ui.SysMsg("Experience Card Calculator loaded!");
+	DESTROY_CHILD_BY_USERVALUE(frame, "IS_VAR_ICON", "YES");
+
+	local status = frame:GetChild("status");
+	local inven = frame:GetChild("inven");
+	local offsetX = inven:GetX() - status:GetX();
+	local startX = status:GetMargin().left - offsetX;
+
+	startX = SYSMENU_CREATE_VARICON(frame, status, "guild", "guild", "sysmenu_guild", startX, offsetX, "Guild");
+	startX = SYSMENU_CREATE_VARICON(frame, status, "necronomicon", "necronomicon", "sysmenu_card", startX, offsetX);
+	startX = SYSMENU_CREATE_VARICON(frame, status, "grimoire", "grimoire", "sysmenu_neacro", startX, offsetX);
+	startX = SYSMENU_CREATE_VARICON(frame, status, "poisonpot", "poisonpot", "sysmenu_wugushi", startX, offsetX);
+	startX = SYSMENU_CREATE_VARICON(frame, status, "expcardcalculator", "expcardcalculator", "sysmenu_jem", startX, offsetX, "Addons");
+
+	local expcardcalculatorButton = GET_CHILD(frame, "expcardcalculator", "ui::CButton");
+	expcardcalculatorButton:SetTextTooltip("{@st59}Experience Card Calculator");
+end
+
+SETUP_HOOK(SYSMENU_CHECK_HIDE_VAR_ICONS_HOOKED, "SYSMENU_CHECK_HIDE_VAR_ICONS");
+
+local sysmenuFrame = ui.GetFrame("sysmenu");
+SYSMENU_CHECK_HIDE_VAR_ICONS(sysmenuFrame);
+
+init();
