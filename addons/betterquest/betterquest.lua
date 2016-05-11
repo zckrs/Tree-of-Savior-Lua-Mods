@@ -112,10 +112,6 @@ function BETTERQUEST_UPDATE_ALLQUEST(frame, msg, isNew, questID, isNewQuest)
 			local questIES = quests[i]; --
 			local questAutoIES = GetClass('QuestProgressCheck_Auto',questIES.ClassName)
 
-			if string.sub(questIES.Name, 1, 1) ~= "[" then
-				questIES.Name = "[" .. questIES.Level .. "] " .. questIES.Name;
-			end
-
 			if questIES.ClassName ~= "None" then
 				local ctrlName = "_Q_" .. questIES.ClassID;
 				local abandonCheck = QUEST_ABANDON_RESTARTLIST_CHECK(questIES, sobjIES)
@@ -145,9 +141,53 @@ function BETTERQUEST_UPDATE_ALLQUEST(frame, msg, isNew, questID, isNewQuest)
 			UPDATE_QUEST_DETAIL(frame, questID);
 		end
 	end
-
+	updateQuestName()
 	frame:Invalidate();
 end
+function updateQuestName()
+
+	local frame = ui.GetFrame('quest');
+	local questGbox = frame:GetChild('questGbox');
+
+	local clsList, cnt = GetClassList("QuestProgressCheck");
+	for i = 0, cnt -1 do
+		
+		local questIES = GetClassByIndexFromList(clsList, i);
+		local ctrlName = "_Q_" .. questIES.ClassID;
+
+		local Quest_Ctrl = GET_CHILD(questGbox, ctrlName, "ui::CControlSet");
+		if Quest_Ctrl ~= nil then
+			local nametxt = GET_CHILD(Quest_Ctrl, "name", "ui::CRichText");
+
+			if questIES.QuestMode == 'REPEAT' then
+				local pc = GetMyPCObject();
+				local sObj = GetSessionObject(pc, 'ssn_klapeda')
+				if sObj ~= nil then
+					if questIES.Repeat_Count ~= 0 then
+						questname = "[" .. questIES.Level .. "] " .. questIES.Name..ScpArgMsg("Auto__-_BanBog({Auto_1}/{Auto_2})","Auto_1", sObj[questIES.QuestPropertyName..'_R'] + 1, "Auto_2",questIES.Repeat_Count)
+					else
+						questname = "[" .. questIES.Level .. "] " .. questIES.Name..ScpArgMsg("Auto__-_BanBog({Auto_1}/MuHan)","Auto_1", sObj[questIES.QuestPropertyName..'_R'])
+					end
+			end
+			elseif questIES.QuestMode == 'PARTY' then
+				local pc = GetMyPCObject();
+			    local sObj = GetSessionObject(pc, 'ssn_klapeda')
+				if sObj ~= nil then
+					questname = "[" .. questIES.Level .. "] " .. questIES.Name..ScpArgMsg("Auto__-_BanBog({Auto_1}/{Auto_2})","Auto_1", sObj.PARTY_Q_COUNT1 + 1, "Auto_2",CON_PARTYQUEST_DAYMAX1)
+				end
+			end
+			questname = "[" .. questIES.Level .. "] " .. questIES.Name;
+
+			if questIES.QuestMode == 'MAIN' then
+				nametxt:SetText(QUEST_TITLE_FONT..'{#FF6600}'..questname)
+			else
+				nametxt:SetText(QUEST_TITLE_FONT..questname)
+			end
+			nametxt:SetText(questname);
+		end
+	end
+end
+
 
 function questSort(a, b)
 	return a.Level < b.Level
