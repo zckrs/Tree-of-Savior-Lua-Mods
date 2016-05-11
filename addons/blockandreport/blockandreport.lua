@@ -131,7 +131,9 @@ function SHOW_PC_CONTEXT_MENU_HOOKED(handle)
 			ui.AddContextMenuItem(context, "Visit Lodge", string.format("barrackNormal.Visit(%d)", handle));
 
 		end
-
+		
+		ui.AddContextMenuItem(context, "Friendly Duel Request", string.format("REQUEST_FIGHT(\"%d\")", pcObj:GetHandleVal()));
+		
 		if FRIEND_LIST_BLOCKED == friendsListType then
 			ui.AddContextMenuItem(context, "Report Bot", string.format("REPORT_AUTOBOT_MSGBOX('%s')", targetName));
 			ui.AddContextMenuItem(context, "Unblock", string.format("FRIEND_REMOVE('%s', 'block list')", targetName));
