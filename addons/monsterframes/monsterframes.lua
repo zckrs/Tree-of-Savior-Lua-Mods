@@ -140,12 +140,8 @@ function TARGETINFO_ON_MSG_HOOKED(frame, msg, argStr, argNum)
 			return;
 		end
 
-		local numhp = nil;
-		if targetinfo.isElite == 1 then
-			numhp = frame:CreateOrGetControl("richtext", "numhp", 3, -5, 176, 115);
-		else
-			numhp = frame:CreateOrGetControl("richtext", "numhp", -17, 0, 176, 115);
-		end
+		local numhp = frame:CreateOrGetControl("richtext", "numhp", -17, 0, 176, 115);
+		
 		tolua.cast(numhp, "ui::CRichText");
 		numhp:ShowWindow(1);
 		numhp:SetGravity(ui.CENTER_HORZ, ui.TOP);
