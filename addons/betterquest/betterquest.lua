@@ -144,6 +144,7 @@ function BETTERQUEST_UPDATE_ALLQUEST(frame, msg, isNew, questID, isNewQuest)
 	updateQuestName()
 	frame:Invalidate();
 end
+
 function updateQuestName()
 
 	local frame = ui.GetFrame('quest');
@@ -151,7 +152,7 @@ function updateQuestName()
 
 	local clsList, cnt = GetClassList("QuestProgressCheck");
 	for i = 0, cnt -1 do
-		
+
 		local questIES = GetClassByIndexFromList(clsList, i);
 		local ctrlName = "_Q_" .. questIES.ClassID;
 
@@ -171,7 +172,7 @@ function updateQuestName()
 			end
 			elseif questIES.QuestMode == 'PARTY' then
 				local pc = GetMyPCObject();
-			    local sObj = GetSessionObject(pc, 'ssn_klapeda')
+					local sObj = GetSessionObject(pc, 'ssn_klapeda')
 				if sObj ~= nil then
 					questname = "[" .. questIES.Level .. "] " .. questIES.Name..ScpArgMsg("Auto__-_BanBog({Auto_1}/{Auto_2})","Auto_1", sObj.PARTY_Q_COUNT1 + 1, "Auto_2",CON_PARTYQUEST_DAYMAX1)
 				end
@@ -188,7 +189,6 @@ function updateQuestName()
 	end
 end
 
-
 function questSort(a, b)
 	return a.Level < b.Level
 end
@@ -201,4 +201,5 @@ end
 SETUP_HOOK(QUEST_ON_INIT_HOOKED, "QUEST_ON_INIT");
 
 BETTERQUEST_ON_INIT();
+
 ui.SysMsg("Better Quest loaded!");

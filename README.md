@@ -27,7 +27,7 @@ Press the "Load Addons" button. It should disappear.
 ![Load Addons](http://i.imgur.com/8ujqiMq.jpg)
 
 Play!
- 
+
 ![Play!](http://i.imgur.com/z8xXMvA.jpg)
 
 Be sure to press the "R" button at the topright of the experience viewer window in order to save its position after moving it. It will move back if you don't.

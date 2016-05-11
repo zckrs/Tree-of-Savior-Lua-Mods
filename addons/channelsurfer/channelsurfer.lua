@@ -15,20 +15,20 @@ function SELECT_ZONE_MOVE_CHANNEL_HOOKED(index, channelID)
 end
 
 function POPUP_CHANNEL_LIST_HOOKED(parent)
-    if parent:GetUserValue("ISOPENDROPCHANNELLIST") == "YES" then
-        parent:SetUserValue("ISOPENDROPCHANNELLIST", "NO");
-        return;
-    end
+		if parent:GetUserValue("ISOPENDROPCHANNELLIST") == "YES" then
+				parent:SetUserValue("ISOPENDROPCHANNELLIST", "NO");
+				return;
+		end
 
-    parent:SetUserValue("ISOPENDROPCHANNELLIST", "YES");
+		parent:SetUserValue("ISOPENDROPCHANNELLIST", "YES");
 
-    local frame = parent:GetTopParentFrame();
-    local ctrl = frame:GetChild("btn");
-    local curchannel = frame:GetChild("curchannel");
-    local mapName = session.GetMapName();
-    local mapCls = GetClass("Map", mapName);
+		local frame = parent:GetTopParentFrame();
+		local ctrl = frame:GetChild("btn");
+		local curchannel = frame:GetChild("curchannel");
+		local mapName = session.GetMapName();
+		local mapCls = GetClass("Map", mapName);
 
-    local channel = session.loginInfo.GetChannel();
+		local channel = session.loginInfo.GetChannel();
 
 	local zoneInsts = session.serverState.GetMap(mapCls.ClassID);
 
@@ -39,21 +39,21 @@ function POPUP_CHANNEL_LIST_HOOKED(parent)
 		numberOfChannelsToShow = settings.maxNumberOfChannelsToShow;
 	end
 
-    local dropListFrame = ui.MakeDropListFrame(ctrl, -270, 0, 300, 600, numberOfChannelsToShow, ui.LEFT, "SELECT_ZONE_MOVE_CHANNEL");
+		local dropListFrame = ui.MakeDropListFrame(ctrl, -270, 0, 300, 600, numberOfChannelsToShow, ui.LEFT, "SELECT_ZONE_MOVE_CHANNEL");
 
-    if zoneInsts == nil then
-        app.RequestChannelTraffics(mapCls.ClassID);
-    else
-        if zoneInsts:NeedToCheckUpdate() == true then
-            app.RequestChannelTraffics(mapCls.ClassID);
-        end
+		if zoneInsts == nil then
+				app.RequestChannelTraffics(mapCls.ClassID);
+		else
+				if zoneInsts:NeedToCheckUpdate() == true then
+						app.RequestChannelTraffics(mapCls.ClassID);
+				end
 
-        for i = 0, NUMBER_OF_CHANNELS - 1 do
-            local zoneInst = zoneInsts:GetZoneInstByIndex(i);
-            local str, gaugeString = GET_CHANNEL_STRING(zoneInst);
-            ui.AddDropListItem(str, gaugeString, zoneInst.channel);
-        end
-    end
+				for i = 0, NUMBER_OF_CHANNELS - 1 do
+						local zoneInst = zoneInsts:GetZoneInstByIndex(i);
+						local str, gaugeString = GET_CHANNEL_STRING(zoneInst);
+						ui.AddDropListItem(str, gaugeString, zoneInst.channel);
+				end
+		end
 end
 
 function CHSURF_CHANGE_CHANNEL(nextChannel)
@@ -78,7 +78,7 @@ function CHSURF_CREATE_BUTTONS()
 	nextbutton:SetEventScript(ui.LBUTTONUP, "CHSURF_CHANGE_CHANNEL(1)");
 	nextbutton:SetClickSound('button_click_big');
 	nextbutton:SetOverSound('button_over');
-	
+
 	local prevbutton = frame:CreateOrGetControl('button', "prevbutton", 5, 5, btnsize, btnsize);
 	tolua.cast(prevbutton, "ui::CButton");
 	prevbutton:SetText("{s22}<");
@@ -98,4 +98,5 @@ SETUP_HOOK(SELECT_ZONE_MOVE_CHANNEL_HOOKED, "SELECT_ZONE_MOVE_CHANNEL");
 SETUP_HOOK(POPUP_CHANNEL_LIST_HOOKED, "POPUP_CHANNEL_LIST");
 
 CHSURF_CREATE_BUTTONS();
+
 ui.SysMsg("Channel Surfer loaded!");

@@ -204,7 +204,7 @@ function UPDATE_UI(experienceTextName, experienceData)
 							yPosition,
 							columnKey
 						);
-					elseif i == 1  then
+					elseif i == 1 then
 						xPosition = UPDATE_CELL(
 							i,
 							richText,
@@ -278,7 +278,7 @@ function UPDATE_UI(experienceTextName, experienceData)
 							yPosition,
 							columnKey
 						);
-					elseif i == 1  then
+					elseif i == 1 then
 						xPosition = UPDATE_CELL(
 							i,
 							richText,
@@ -352,7 +352,7 @@ function UPDATE_UI(experienceTextName, experienceData)
 							yPosition,
 							columnKey
 						);
-					elseif i == 1  then
+					elseif i == 1 then
 						xPosition = UPDATE_CELL(
 							i,
 							richText,
@@ -423,7 +423,7 @@ function UPDATE_CELL(i, richTextComponent, label, showField, xPosition, yPositio
 		richTextComponent:SetOffset(xPosition, yPosition);
 		richTextComponent:ShowWindow(1);
 
-		xPosition = xPosition + CALCULATE_MAX_COLUMN_WIDTH(i)  + _G["EXPERIENCE_VIEWER"]["padding"];
+		xPosition = xPosition + CALCULATE_MAX_COLUMN_WIDTH(i) + _G["EXPERIENCE_VIEWER"]["padding"];
 	else
 		_G["EXPERIENCE_VIEWER"][columnKey][i+1] = 0;
 		richTextComponent:SetText("");
@@ -474,7 +474,7 @@ function UPDATE_BUTTONS(expFrame)
 end
 
 function PRINT_EXPERIENCE_DATA(experienceData)
-	ui.SysMsg(experienceData.currentExperience .. " / " .. experienceData.requiredExperience .. "   " .. experienceData.lastExperienceGain .. " gained   " .. experienceData.currentPercent .. "%" .. "   " .. experienceData.killsTilNextLevel .. " tnl   " .. experienceData.experiencePerHour .. " exp/hr");
+	ui.SysMsg(experienceData.currentExperience .. " / " .. experienceData.requiredExperience .. "  " .. experienceData.lastExperienceGain .. " gained  " .. experienceData.currentPercent .. "%" .. "  " .. experienceData.killsTilNextLevel .. " tnl  " .. experienceData.experiencePerHour .. " exp/hr");
 end
 
 function RESET()

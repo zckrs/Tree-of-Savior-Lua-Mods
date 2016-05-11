@@ -1,5 +1,4 @@
 function MAKE_ABILITYSHOP_ICON_HOOKED(frame, pc, grid, abilityClass, groupClass, posY)
-
 	local onlyShowLearnable = GET_CHILD_RECURSIVELY(frame, "onlyShowLearnable")
 	local abilityLevel = 0;
 	local isMax = false;
@@ -23,7 +22,6 @@ function MAKE_ABILITYSHOP_ICON_HOOKED(frame, pc, grid, abilityClass, groupClass,
 	end
 
 	return _G["MAKE_ABILITYSHOP_ICON_OLD"](frame, pc, grid, abilityClass, groupClass, posY);
-
 end
 
 SETUP_HOOK(MAKE_ABILITYSHOP_ICON_HOOKED, "MAKE_ABILITYSHOP_ICON");

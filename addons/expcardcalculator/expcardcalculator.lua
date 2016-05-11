@@ -10,7 +10,7 @@ function EXPCARDCALCULATOR_ON_JOB_EXP_UPDATE(frame, msg, str, exp, tableinfo)
 end
 
 function string.starts(String,Start)
-   return string.sub(String, 1, string.len(Start)) == Start
+	 return string.sub(String, 1, string.len(Start)) == Start
 end
 
 local function createExperienceRow(index, itemName, numberOfItems, totalExperience, yPosition)
@@ -61,7 +61,7 @@ local function getClassData()
 
 		totalClassExperience = totalClassExperience + jobClass.TotalXp;
 
-		classExperienceData[jobClass.ClassName]  = {};
+		classExperienceData[jobClass.ClassName] = {};
 		classExperienceData[jobClass.ClassName]["requiredExperience"] = jobClass.TotalXp;
 		classExperienceData[jobClass.ClassName]["totalClassExperience"] = totalClassExperience;
 

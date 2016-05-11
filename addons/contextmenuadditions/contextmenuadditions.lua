@@ -1,20 +1,15 @@
 function BLOCK_AND_REPORT(targetName)
-
 	local msgBoxString = string.format("Report %s and Block new messages?", targetName);
 	local blockAndReportScp = string.format("BLOCK_AND_REPORT_FUNC('%s')", targetName);
 	ui.MsgBox(msgBoxString, blockAndReportScp, "None");
-
 end
 
 function BLOCK_AND_REPORT_FUNC(targetName)
-
 	REPORT_AUTOBOT(targetName);
 	friends.RequestBlock(targetName);
-
 end
 
 function CHAT_RBTN_POPUP_HOOKED(frame, chatCtrl)
-
 	local targetName = chatCtrl:GetUserValue("TARGET_NAME");
 
 	if session.world.IsIntegrateServer() == true then
@@ -25,22 +20,22 @@ function CHAT_RBTN_POPUP_HOOKED(frame, chatCtrl)
 	if targetName == GETMYFAMILYNAME() then
 		return;
 	end
-	
+
 	local friendsListType = session.friends.GetFriendListTypeByFamilyName(targetName);
-	
+
 	local groupBoxName = chatCtrl:GetParent():GetName();
 	local chatCtrlName = chatCtrl:GetName();
-	
+
 	local context = ui.CreateContextMenu("CONTEXT_CHAT_RBTN", targetName, 0, 0, 170, 100);
 
 	ui.AddContextMenuItem(context, "Whisper", string.format("ui.WhisperTo('%s')", targetName));
 	ui.AddContextMenuItem(context, "Character Info", string.format("OPEN_PARTY_MEMBER_INFO('%s')", targetName));
 	ui.AddContextMenuItem(context, "Party Request", string.format("PARTY_INVITE('%s')", targetName));
-	
+
 	if AM_I_LEADER(PARTY_GUILD) == 1 then
 		ui.AddContextMenuItem(context, ClMsg("GUILD_INVITE"), string.format("GUILD_INVITE('%s')", targetName));
 	end
-	
+
 	if FRIEND_LIST_COMPLETE == friendsListType then
 		ui.AddContextMenuItem(context, "Remove Friend", string.format("FRIEND_REMOVE('%s', 'friends list')", targetName));
 		ui.AddContextMenuItem(context, "Remove Message", string.format("REMOVE_CHAT_CLUSTER('%s', '%s')", chatCtrlName, groupBoxName));
@@ -56,16 +51,15 @@ function CHAT_RBTN_POPUP_HOOKED(frame, chatCtrl)
 		ui.AddContextMenuItem(context, "Report Bot", string.format("REPORT_AUTOBOT_MSGBOX('%s')", targetName));
 		ui.AddContextMenuItem(context, "Block", string.format("CHAT_BLOCK_MSG('%s')", targetName));
 	end
-	
+
 	ui.AddContextMenuItem(context, "Cancel", "None");
 	ui.OpenContextMenu(context);
-
 end
 
 function FRIEND_REMOVE(targetName, listname)
 	local friendsListType = session.friends.GetFriendListTypeByFamilyName(targetName);
 	local cnt = session.friends.GetFriendCount(friendsListType);
-	
+
 	for i = 0 , cnt - 1 do
 		local f = session.friends.GetFriendByIndex(friendsListType, i);
 		if targetName == f:GetInfo():GetFamilyName() then
@@ -92,7 +86,6 @@ end
 
 
 function SHOW_PC_CONTEXT_MENU_HOOKED(handle)
-
 	local pcObj = world.GetActor(handle);
 	local targetName = pcObj:GetPCApc():GetFamilyName();
 
@@ -105,7 +98,7 @@ function SHOW_PC_CONTEXT_MENU_HOOKED(handle)
 	end
 
 	if pcObj:IsMyPC() == 0 and info.IsPC(pcObj:GetHandleVal()) == 1 then
-	
+
 		local friendsListType = session.friends.GetFriendListTypeByFamilyName(targetName);
 
 		local context = ui.CreateContextMenu("PC_CONTEXT_MENU", targetName, 0, 0, 170, 100);
@@ -117,7 +110,7 @@ function SHOW_PC_CONTEXT_MENU_HOOKED(handle)
 			ui.AddContextMenuItem(context, "Whisper", string.format("ui.WhisperTo('%s')", targetName));
 			ui.AddContextMenuItem(context, "Character Info", string.format("PROPERTY_COMPARE(%d)", handle));
 			ui.AddContextMenuItem(context, "Party Request", string.format("PARTY_INVITE('%s')", targetName));
-			
+
 			if FRIEND_LIST_COMPLETE == friendsListType then
 				ui.AddContextMenuItem(context, "Remove Friend", string.format("FRIEND_REMOVE('%s', 'friends list')", targetName));
 			else
@@ -131,9 +124,9 @@ function SHOW_PC_CONTEXT_MENU_HOOKED(handle)
 			ui.AddContextMenuItem(context, "Visit Lodge", string.format("barrackNormal.Visit(%d)", handle));
 
 		end
-		
+
 		ui.AddContextMenuItem(context, "Friendly Duel Request", string.format("REQUEST_FIGHT(\"%d\")", pcObj:GetHandleVal()));
-		
+
 		if FRIEND_LIST_BLOCKED == friendsListType then
 			ui.AddContextMenuItem(context, "Report Bot", string.format("REPORT_AUTOBOT_MSGBOX('%s')", targetName));
 			ui.AddContextMenuItem(context, "Unblock", string.format("FRIEND_REMOVE('%s', 'block list')", targetName));
@@ -156,7 +149,6 @@ function SHOW_PC_CONTEXT_MENU_HOOKED(handle)
 		return context;
 
 	end
-
 end
 
 function REMOVE_CHAT_CLUSTER(clusterName, groupBoxName)
@@ -167,7 +159,7 @@ function REMOVE_CHAT_CLUSTER(clusterName, groupBoxName)
 	end
 	local groupBox = GET_CHILD(chatFrame, groupBoxName, "ui::CGroupBox");
 	local chatCtrl = GET_CHILD(groupBox, clusterName);
-	
+
 	chatCtrl:Resize(0, 0);
 	chatCtrl:ShowWindow(0);
 	GBOX_AUTO_ALIGN(groupBox, 0, 0, 0, true, false);
@@ -176,9 +168,8 @@ function REMOVE_CHAT_CLUSTER(clusterName, groupBoxName)
 	chatFrame:Invalidate();
 end
 
-
 function RESIZE_CHAT_CTRL_HOOKED(chatCtrl, label, txt, timeBox)
-	if removedClusterNames[chatCtrl:GetName()] == true then 
+	if removedClusterNames[chatCtrl:GetName()] == true then
 		local groupBox = chatCtrl:GetParent();
 		chatCtrl:Resize(1, 0);
 		chatCtrl:ShowWindow(0);

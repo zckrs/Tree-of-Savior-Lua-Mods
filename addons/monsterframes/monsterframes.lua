@@ -72,7 +72,7 @@ function TGTINFO_TARGET_SET_HOOKED(frame, msg, argStr, argNum)
 	end
 
 	local positionIndex = 0;
-	
+
 	if settings.showRaceType then
 		SHOW_PROPERTY_WINDOW(frame, monCls, targetinfo.raceType, "RaceType", xPosition + (positionIndex * propertyWidth), yPosition, 10, 10);
 		positionIndex = positionIndex + 1;
@@ -128,7 +128,7 @@ end
 
 function TARGETINFO_ON_MSG_HOOKED(frame, msg, argStr, argNum)
   _G["TARGETINFO_ON_MSG_OLD"](frame, msg, argStr, argNum);
-  
+
 	if frame == nil then
 		return;
 	end
@@ -138,10 +138,10 @@ function TARGETINFO_ON_MSG_HOOKED(frame, msg, argStr, argNum)
 		if stat == nil then
 			return;
 		end
-		
-    local numhp = nil;
-    local targetinfo = info.GetTargetInfo(session.GetTargetHandle());
-    
+
+	local numhp = nil;
+	local targetinfo = info.GetTargetInfo(session.GetTargetHandle());
+
 		if targetinfo.isElite == 1 then
 			numhp = frame:CreateOrGetControl("richtext", "numhp", 3, -5, 176, 115);
 		else

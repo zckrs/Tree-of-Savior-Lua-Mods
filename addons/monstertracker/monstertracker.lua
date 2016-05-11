@@ -33,8 +33,8 @@ function FPS_ON_MSG_HOOKED(frame, msg, argStr, argNum)
 	local result = SCR_GET_ZONE_FACTION_OBJECT(session.GetMapName(), "Monster", "Normal/Material/Elite/Boss", 120000);
 
 	for k,v in pairs(result) do
-	    local mobName = v[1];
-	    local totalSpawn = v[2];
+			local mobName = v[1];
+			local totalSpawn = v[2];
 
 		local monCls = GetClass("Monster", mobName);
 		local wiki = GetWikiByName(monCls.Journal);
