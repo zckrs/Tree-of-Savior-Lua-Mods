@@ -140,6 +140,7 @@ function TARGETINFO_ON_MSG_HOOKED(frame, msg, argStr, argNum)
 			return;
 		end
 
+		local numhp = nil;
 		if targetinfo.isElite == 1 then
 			numhp = frame:CreateOrGetControl("richtext", "numhp", 3, -5, 176, 115);
 		else
