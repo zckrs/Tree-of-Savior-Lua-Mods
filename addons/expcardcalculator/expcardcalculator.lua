@@ -23,6 +23,8 @@ local function createExperienceRow(index, itemName, numberOfItems, totalExperien
 			local cardList = gbox:GetChild("internalExperienceCardGroupBox");
 
 			if cardList ~= nil then
+				tolua.cast(cardList, "ui::CGroupBox");
+
 				local cardItem = cardList:CreateOrGetControlSet("status_stat", "expCard_" .. index, -5, yPosition);
 				tolua.cast(cardItem, "ui::CControlSet");
 
@@ -72,6 +74,21 @@ local function getExperienceCardTotals()
 	local totalBaseExperience = 0;
 	local totalClassExperience = 0;
 	local yPosition = 10;
+
+	local expCardCalculatorFrame = ui.GetFrame("expcardcalculator");
+
+	if expCardCalculatorFrame ~= nil then
+		local gbox = expCardCalculatorFrame:GetChild("experienceCardGroupBox");
+
+		if gbox ~= nil then
+			local cardList = gbox:GetChild("internalExperienceCardGroupBox");
+
+			if cardList ~= nil then
+				tolua.cast(cardList, "ui::CGroupBox");
+				cardList:DeleteAllControl();
+			end
+		end
+	end
 
 	local invItemList = session.GetInvItemList();
 
