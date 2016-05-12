@@ -105,12 +105,16 @@ local function getExperienceCardTotals()
 					if string.starts(itemobj.ClassName, "expCard") then
 						local remainInvItemCount = GET_REMAIN_INVITEM_COUNT(invItem);
 
+						local totalBaseCardExperience = 0;
+
 						for i=1,remainInvItemCount do
-							totalBaseExperience = totalBaseExperience + itemobj.NumberArg1;
+							totalBaseCardExperience = totalBaseCardExperience + itemobj.NumberArg1;
 							totalClassExperience = totalClassExperience + (itemobj.NumberArg1 * 0.77);
 						end
 
-						yPosition = createExperienceRow(i, itemobj.Name, remainInvItemCount, totalBaseExperience, yPosition);
+						totalBaseExperience = totalBaseExperience + totalBaseCardExperience;
+
+						yPosition = createExperienceRow(i, itemobj.Name, remainInvItemCount, totalBaseCardExperience, yPosition);
 					end
 				end
 			end
