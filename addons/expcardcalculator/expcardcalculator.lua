@@ -148,7 +148,7 @@ function EXP_CARD_CALCULATOR_OPEN()
 	local pc = GetMyPCObject();
 
 	if pc ~= nil then
-		local currentLevel = pc.Lv;
+		local currentLevel = pc.Lv-1;
 		local currentBaseExperienceClass = GetClassByType("Xp", currentLevel);
 		local currentTotalBaseExperience = session.GetEXP() + currentBaseExperienceClass.TotalXp;
 		local finalBaseExperience = currentTotalBaseExperience + totalBaseExperience + baseExperienceFromCards;
@@ -159,7 +159,7 @@ function EXP_CARD_CALCULATOR_OPEN()
 			currentLevelClass = GetClassByType("Xp", currentLevel);
 		end
 
-		finalBaseLevel = currentLevel - 1;
+		finalBaseLevel = currentLevel;
 
 		local previousLevelClass = GetClassByType("Xp", currentLevel-1);
 		local requiredBaseExperience = currentLevelClass.TotalXp - previousLevelClass.TotalXp;
