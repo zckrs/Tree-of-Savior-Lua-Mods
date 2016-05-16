@@ -18,6 +18,7 @@ dofile("../addons/mapfogviewer/mapfogviewer.lua");
 dofile("../addons/monsterframes/monsterframes.lua");
 dofile("../addons/monstertracker/monstertracker.lua");
 dofile("../addons/showinvestedstatpoints/showinvestedstatpoints.lua");
+dofile("../addons/showpetstamina/showpetstamina.lua");
 
 --do not touch below here
 local addonLoaderFrame = ui.GetFrame("addonloader");
