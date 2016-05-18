@@ -168,3 +168,24 @@ function SETUP_HOOK(newFunction, hookedFunctionStr)
 		_G[hookedFunctionStr] = newFunction;
 	end
 end
+
+_G['ADDONS'] = _G['ADDONS'] or {};
+_G['ADDONS']['EVENTS'] = _G['ADDONS']['EVENTS'] or {};
+_G['ADDONS']['EVENTS']['ARGS'] = _G['ADDONS']['EVENTS']['ARGS'] or {};
+
+function SETUP_EVENT(myAddon, functionName, myFunctionName)
+	if _G['ADDONS']['EVENTS'][functionName .. "_OLD"] == nil then
+		_G['ADDONS']['EVENTS'][functionName .. "_OLD"] =  _G[functionName];
+	end
+
+	local hookedFuncString = [[_G[']]..functionName..[['] = function(...)
+		local thisFuncName = "]]..functionName..[[";
+		_G['ADDONS']['EVENTS'][thisFuncName .. '_OLD'](...);
+		_G['ADDONS']['EVENTS']['ARGS'][thisFuncName] = {...};
+		imcAddOn.BroadMsg(thisFuncName);
+	end
+	]];
+
+	assert(loadstring(hookedFuncString))();
+	myAddon:RegisterMsg(functionName, myFunctionName);
+end
