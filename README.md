@@ -81,6 +81,8 @@ To remove an addon, delete or comment out the dofile line in addons/addonloader.
 
 IMC has said that addons are allowed. https://forum.treeofsavior.com/t/stance-on-addons/141262/24
 
+Yes, all addons that aren't hacks/exploits. Not just expviewer. Not just map fog viewer.
+
 ![Addons 1](http://i.imgur.com/oJ4B99B.png)
 
 ![Addons 2](http://i.imgur.com/rxLmSoa.png)
