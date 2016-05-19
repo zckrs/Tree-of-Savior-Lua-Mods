@@ -13,8 +13,11 @@ This is just due to the patcher not checking for unicode characters in filenames
 * Enhanced monster frames
 * Monster kill tracker for journal
 * Guildmates - Displays character level and character name in a tooltip. Adds party request and friend request to the context menu.
+* Zoomy - Allows you to zoom in/out by holding LEFTALT+PLUS or LEFTALT+MINUS.
 
 ![Tree of Savior Experience Viewer](http://i.imgur.com/z8xXMvA.jpg)
+
+![Zoomy](http://i.imgur.com/brIjyQ4.jpg)
 
 # Download
 
