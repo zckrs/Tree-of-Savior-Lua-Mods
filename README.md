@@ -77,6 +77,14 @@ settings = {
 
 To remove an addon, delete or comment out the dofile line in addons/addonloader.lua.
 
+# Roadmap
+
+* Phase out addon loader and convert all current addons to ipfs only. All addons going forward will be ipfs only.
+* Refresh experience viewer. Remove dependencies on hooks as none of them are needed at all. Clean up the look with a new skin and fix up the formatting. Add context menu for all options such as showing and hiding any column.
+* Move system menu button to generic utility file. Create popup menu like the system menu functions today. Any addon can call into this to add a button. Will allow things like toggling expviewer and opening settings for each addon.
+* Finish and release developer console. This will have some utility methods and override print so anything using print() will pipe to this window as some form of stdout.
+* Create draggable window for monster tracker that keeps track of all monster kills on current map and shows their reward.
+
 # Disclaimer
 
 IMC has said that addons are allowed. https://forum.treeofsavior.com/t/stance-on-addons/141262/24
