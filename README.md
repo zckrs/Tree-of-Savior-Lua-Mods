@@ -84,6 +84,7 @@ To remove an addon, delete or comment out the dofile line in addons/addonloader.
 * Move system menu button to generic utility file. Create popup menu like the system menu functions today. Any addon can call into this to add a button. Will allow things like toggling expviewer and opening settings for each addon.
 * Finish and release developer console. This will have some utility methods and override print so anything using print() will pipe to this window as some form of stdout.
 * Create draggable window for monster tracker that keeps track of all monster kills on current map and shows their reward.
+* Work on a wardrobes addon that allows people to create as many gear sets as they want and swap them instantly by dragging it to the hotkey bar.
 
 # Disclaimer
 
