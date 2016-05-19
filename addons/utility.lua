@@ -180,12 +180,16 @@ function SETUP_EVENT(myAddon, functionName, myFunctionName)
 
 	local hookedFuncString = [[_G[']]..functionName..[['] = function(...)
 		local thisFuncName = "]]..functionName..[[";
-		_G['ADDONS']['EVENTS'][thisFuncName .. '_OLD'](...);
+		pcall(_G['ADDONS']['EVENTS'][thisFuncName .. '_OLD'], ...);
 		_G['ADDONS']['EVENTS']['ARGS'][thisFuncName] = {...};
 		imcAddOn.BroadMsg(thisFuncName);
 	end
 	]];
 
-	assert(loadstring(hookedFuncString))();
+	pcall(loadstring(hookedFuncString));
 	myAddon:RegisterMsg(functionName, myFunctionName);
+end
+
+function GET_EVENT_ARGS(eventMsg)
+	return unpack(_G['ADDONS']['EVENTS']['ARGS'][eventMsg]);
 end
